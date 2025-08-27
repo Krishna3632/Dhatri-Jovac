@@ -22,6 +22,8 @@ import {
   Zap
 } from 'lucide-react';
 
+
+
 import { Link } from 'react-router-dom';
 
 function LandingPage() {
@@ -34,6 +36,7 @@ function LandingPage() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  
 
   const features = [
     { 
@@ -123,64 +126,107 @@ function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
       {/* Navigation */}
-      <nav className="bg-white/95 backdrop-blur-sm shadow-lg sticky top-0 z-50 border-b border-blue-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-green-600 rounded-xl flex items-center justify-center">
-                <Heart className="w-6 h-6 text-white" />
+      <nav className="bg-white/98 backdrop-blur-md shadow-2xl shadow-lg sticky top-0 z-50  border-gradient-to-r from-blue-200/30 to-green-200/30">
+      <div className="max-w-full px-6 sm:px-8 lg:px-12">
+        <div className="flex justify-between items-center py-5">
+          {/* Logo Section - Extreme Left */}
+          <div className="flex items-center space-x-4 flex-shrink-0">
+            <div className="relative">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 via-blue-500 to-green-500 rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-all duration-300 hover:rotate-12">
+                <Heart className="w-7 h-7 text-white drop-shadow-sm" />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent tracking-tight">
                 Dhatri Healthcare
               </span>
+              <span className="text-xs text-gray-500 font-medium tracking-wide">
+                Caring Beyond Limits
+              </span>
             </div>
+          </div>
 
-            <div className="hidden md:flex items-center space-x-8">
-              <button onClick={() => scrollToSection('features')} className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-                Features
-              </button>
-              <button onClick={() => scrollToSection('testimonials')} className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-                Reviews
-              </button>
-              <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-                Contact
-              </button>
-             <button><Link 
-  to="/login" 
-  className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transform hover:scale-105 transition-all inline-block text-center"
->
-  Get Started
-</Link></button>
-            </div>
-
+          {/* Desktop Navigation - Center */}
+          <div className="hidden lg:flex items-center space-x-12 flex-grow justify-center">
             <button 
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => scrollToSection('features')} 
+              className="group relative text-gray-700 hover:text-blue-600 font-semibold transition-all duration-300 py-2"
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              Features
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-green-500 group-hover:w-full transition-all duration-300"></span>
+            </button>
+            <button 
+              onClick={() => scrollToSection('testimonials')} 
+              className="group relative text-gray-700 hover:text-blue-600 font-semibold transition-all duration-300 py-2"
+            >
+              Reviews
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-green-500 group-hover:w-full transition-all duration-300"></span>
+            </button>
+            <button 
+              onClick={() => scrollToSection('contact')} 
+              className="group relative text-gray-700 hover:text-blue-600 font-semibold transition-all duration-300 py-2"
+            >
+              Contact
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-green-500 group-hover:w-full transition-all duration-300"></span>
             </button>
           </div>
 
-          {/* Mobile Menu */}
-          {isMenuOpen && (
-            <div className="md:hidden bg-white border-t border-gray-200 py-4 animate-in slide-in-from-top duration-200">
-              <div className="flex flex-col space-y-4">
-                <button onClick={() => scrollToSection('features')} className="text-left text-gray-700 hover:text-blue-600 font-medium px-4 py-2">
-                  Features
-                </button>
-                <button onClick={() => scrollToSection('testimonials')} className="text-left text-gray-700 hover:text-blue-600 font-medium px-4 py-2">
-                  Reviews
-                </button>
+          {/* CTA Button - Extreme Right */}
+          <div className="flex items-center space-x-4">
+            <button className="hidden md:flex items-center space-x-2 bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 group">
+              <span>Get Started</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+            </button>
 
-                <button className="mx-4 bg-gradient-to-r from-blue-600 to-green-600 text-white px-6 py-2 rounded-full font-medium">
-                  Get Started
+            {/* Mobile Menu Toggle */}
+            <button 
+              className="lg:hidden p-3 rounded-xl hover:bg-gray-100 transition-colors duration-200 border border-gray-200"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? (
+                <X className="w-6 h-6 text-gray-700" />
+              ) : (
+                <Menu className="w-6 h-6 text-gray-700" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Enhanced Mobile Menu */}
+        {isMenuOpen && (
+          <div className="lg:hidden bg-gradient-to-br from-gray-50 to-blue-50/30 border-t border-gray-200/50 rounded-b-2xl backdrop-blur-sm overflow-hidden">
+            <div className="py-6 px-4 space-y-1">
+              <button 
+                onClick={() => scrollToSection('features')} 
+                className="w-full text-left text-gray-700 hover:text-blue-600 hover:bg-white/50 font-semibold px-6 py-4 rounded-xl transition-all duration-200 border border-transparent hover:border-blue-200"
+              >
+                Features
+              </button>
+              <button 
+                onClick={() => scrollToSection('testimonials')} 
+                className="w-full text-left text-gray-700 hover:text-blue-600 hover:bg-white/50 font-semibold px-6 py-4 rounded-xl transition-all duration-200 border border-transparent hover:border-blue-200"
+              >
+                Reviews
+              </button>
+              <button 
+                onClick={() => scrollToSection('contact')} 
+                className="w-full text-left text-gray-700 hover:text-blue-600 hover:bg-white/50 font-semibold px-6 py-4 rounded-xl transition-all duration-200 border border-transparent hover:border-blue-200"
+              >
+                Contact
+              </button>
+              
+              <div className="pt-4">
+                <button className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 text-white px-6 py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:scale-102 transition-all duration-300 group">
+                  <span>Get Started</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                 </button>
               </div>
             </div>
-          )}    
-        </div>
-      </nav>
-
+          </div>
+        )}    
+      </div>
+    </nav>
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center">
         {/* Animated Background Elements */}
