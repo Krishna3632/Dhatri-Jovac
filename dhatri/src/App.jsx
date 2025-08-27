@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {HashRouter, Routes, Route} from "react-router-dom";
 import LandingPage from "./components/Pages/LandingPage";
 import Dashboard from "./components/Pages/Dashboard";
 import DhatriLogin from "./components/Auth/Login";
@@ -18,7 +18,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <HashRouter>
       <Routes>
         {/* Non-logged-in users see landing page */}
         <Route
@@ -44,7 +44,7 @@ function App() {
         />
         <Route path="/appointments" element={<AppointmentsPage />} />
      </Routes>
-    </Router>
+    </HashRouter>
   );
 }
 
