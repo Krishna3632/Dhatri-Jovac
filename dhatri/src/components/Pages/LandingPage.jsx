@@ -22,14 +22,171 @@ import {
   Zap
 } from 'lucide-react';
 
+// New component for the Login Page
+const LoginPage = ({ setCurrentPage }) => {
+  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
 
+  const handleLoginFormChange = (e) => {
+    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
+  };
 
-import { Link } from 'react-router-dom';
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    // Handle login logic here
+    console.log("Login submitted:", loginForm);
+    // You would typically send this data to an API
+  };
 
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50">
+      <div className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl w-full max-w-md">
+        <button 
+          onClick={() => setCurrentPage('landing')} 
+          className="text-gray-500 hover:text-blue-600 transition-colors mb-4 flex items-center"
+        >
+          <ArrowRight className="w-5 h-5 mr-2 rotate-180" /> Back to Landing
+        </button>
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">
+          Welcome Back
+        </h2>
+        <form onSubmit={handleLoginSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Email Address</label>
+            <input
+              type="email"
+              name="email"
+              value={loginForm.email}
+              onChange={handleLoginFormChange}
+              required
+              className="mt-1 block w-full rounded-xl border-2 border-gray-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={loginForm.password}
+              onChange={handleLoginFormChange}
+              required
+              className="mt-1 block w-full rounded-xl border-2 border-gray-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full flex justify-center py-3 px-4 rounded-xl shadow-lg font-bold text-white bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 transition-all transform hover:scale-105"
+          >
+            Log In
+          </button>
+        </form>
+        <div className="text-center mt-6">
+          <p className="text-sm text-gray-600">
+            Don't have an account?{' '}
+            <button
+              type="button"
+              onClick={() => setCurrentPage('signup')}
+              className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+            >
+              Sign Up
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// New component for the Signup Page
+const SignupPage = ({ setCurrentPage }) => {
+  const [signupForm, setSignupForm] = useState({ name: '', email: '', password: '' });
+
+  const handleSignupFormChange = (e) => {
+    setSignupForm({ ...signupForm, [e.target.name]: e.target.value });
+  };
+
+  const handleSignupSubmit = (e) => {
+    e.preventDefault();
+    // Handle signup logic here
+    console.log("Signup submitted:", signupForm);
+    // You would typically send this data to an API
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50">
+      <div className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl w-full max-w-md">
+        <button 
+          onClick={() => setCurrentPage('landing')} 
+          className="text-gray-500 hover:text-blue-600 transition-colors mb-4 flex items-center"
+        >
+          <ArrowRight className="w-5 h-5 mr-2 rotate-180" /> Back to Landing
+        </button>
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">
+          Create an Account
+        </h2>
+        <form onSubmit={handleSignupSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Full Name</label>
+            <input
+              type="text"
+              name="name"
+              value={signupForm.name}
+              onChange={handleSignupFormChange}
+              required
+              className="mt-1 block w-full rounded-xl border-2 border-gray-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Email Address</label>
+            <input
+              type="email"
+              name="email"
+              value={signupForm.email}
+              onChange={handleSignupFormChange}
+              required
+              className="mt-1 block w-full rounded-xl border-2 border-gray-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={signupForm.password}
+              onChange={handleSignupFormChange}
+              required
+              className="mt-1 block w-full rounded-xl border-2 border-gray-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full flex justify-center py-3 px-4 rounded-xl shadow-lg font-bold text-white bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 transition-all transform hover:scale-105"
+          >
+            Sign Up
+          </button>
+        </form>
+        <div className="text-center mt-6">
+          <p className="text-sm text-gray-600">
+            Already have an account?{' '}
+            <button
+              type="button"
+              onClick={() => setCurrentPage('login')}
+              className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+            >
+              Log In
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Main component containing all page views
 function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [scrollY, setScrollY] = useState(0);
+  const [currentPage, setCurrentPage] = useState('landing'); // State to manage current page view
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -111,11 +268,27 @@ function LandingPage() {
     { number: "4.9★", label: "Patient Rating", icon: <Star className="w-8 h-8 text-yellow-500" /> }
   ];
 
+  const [activeSection, setActiveSection] = useState("");
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
+    const handleScroll = () => {
+      const sections = document.querySelectorAll("section");
+      let current = "";
+
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop - 100; // adjust for navbar height
+        const sectionHeight = section.clientHeight;
+
+        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+          current = section.getAttribute("id");
+        }
+      });
+
+      setActiveSection(current);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (sectionId) => {
@@ -123,9 +296,8 @@ function LandingPage() {
     setIsMenuOpen(false);
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
-      {/* Navigation */}
+  const renderLandingPageContent = () => (
+    <>
       <nav className="bg-white/98 backdrop-blur-md shadow-2xl shadow-lg sticky top-0 z-50  border-gradient-to-r from-blue-200/30 to-green-200/30">
       <div className="max-w-full px-6 sm:px-8 lg:px-12">
         <div className="flex justify-between items-center py-5">
@@ -149,50 +321,60 @@ function LandingPage() {
 
           {/* Desktop Navigation - Center */}
           <div className="hidden lg:flex items-center space-x-12 flex-grow justify-center">
-            <button 
-              onClick={() => scrollToSection('features')} 
-              className="group relative text-gray-700 hover:text-blue-600 font-semibold transition-all duration-300 py-2"
+            <button
+              onClick={() => scrollToSection("features")}
+              className={`group relative font-semibold transition-all duration-300 py-2 ${
+                activeSection === "features"
+                  ? "text-blue-600 after:w-full"
+                  : "text-gray-700 hover:text-blue-600 after:w-0"
+              } after:content-[''] after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:bg-gradient-to-r after:from-blue-600 after:to-green-500 after:transition-all after:duration-300`}
             >
               Features
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-green-500 group-hover:w-full transition-all duration-300"></span>
             </button>
-            <button 
-              onClick={() => scrollToSection('testimonials')} 
-              className="group relative text-gray-700 hover:text-blue-600 font-semibold transition-all duration-300 py-2"
+
+            <button
+              onClick={() => scrollToSection("testimonials")}
+              className={`group relative font-semibold transition-all duration-300 py-2 ${
+                activeSection === "testimonials"
+                  ? "text-blue-600 after:w-full"
+                  : "text-gray-700 hover:text-blue-600 after:w-0"
+              } after:content-[''] after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:bg-gradient-to-r after:from-blue-600 after:to-green-500 after:transition-all after:duration-300`}
             >
               Reviews
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-green-500 group-hover:w-full transition-all duration-300"></span>
             </button>
-            <button 
-              onClick={() => scrollToSection('contact')} 
-              className="group relative text-gray-700 hover:text-blue-600 font-semibold transition-all duration-300 py-2"
+
+            <button
+              onClick={() => scrollToSection("contact")}
+              className={`group relative font-semibold transition-all duration-300 py-2 ${
+                activeSection === "contact"
+                  ? "text-blue-600 after:w-full"
+                  : "text-gray-700 hover:text-blue-600 after:w-0"
+              } after:content-[''] after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:bg-gradient-to-r after:from-blue-600 after:to-green-500 after:transition-all after:duration-300`}
             >
               Contact
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-green-500 group-hover:w-full transition-all duration-300"></span>
             </button>
           </div>
 
-          {/* CTA Button - Extreme Right */}
+          {/* Mobile menu button and Get Started button */}
           <div className="flex items-center space-x-4">
-            <button className="hidden md:flex items-center space-x-2 bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 group">
-              <span>Get Started</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </button>
-
-            {/* Mobile Menu Toggle */}
             <button 
-              className="lg:hidden p-3 rounded-xl hover:bg-gray-100 transition-colors duration-200 border border-gray-200"
+              onClick={() => setCurrentPage('login')}
+              className="hidden lg:block bg-gradient-to-r from-blue-600 to-green-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+            >
+              Get Started
+            </button>
+            <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="lg:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200"
             >
               {isMenuOpen ? (
-                <X className="w-6 h-6 text-gray-700" />
+                <X className="w-6 h-6" />
               ) : (
-                <Menu className="w-6 h-6 text-gray-700" />
+                <Menu className="w-6 h-6" />
               )}
             </button>
           </div>
         </div>
-
         {/* Enhanced Mobile Menu */}
         {isMenuOpen && (
           <div className="lg:hidden bg-gradient-to-br from-gray-50 to-blue-50/30 border-t border-gray-200/50 rounded-b-2xl backdrop-blur-sm overflow-hidden">
@@ -215,9 +397,14 @@ function LandingPage() {
               >
                 Contact
               </button>
-              
               <div className="pt-4">
-                <button className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 text-white px-6 py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:scale-102 transition-all duration-300 group">
+                <button 
+                  onClick={() => {
+                    setCurrentPage('login');
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 text-white px-6 py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:scale-102 transition-all duration-300 group"
+                >
                   <span>Get Started</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                 </button>
@@ -268,7 +455,9 @@ function LandingPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="group bg-gradient-to-r from-blue-600 to-green-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center">
+                <button
+                  onClick={() => setCurrentPage('signup')}
+                  className="group bg-gradient-to-r from-blue-600 to-green-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center">
                   Start Your Journey
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -468,7 +657,7 @@ function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      {/* <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-green-600">
+      <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-green-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">
             Ready to Transform Your Health?
@@ -477,18 +666,22 @@ function LandingPage() {
             Join thousands of patients who've experienced the future of healthcare. Your wellness journey starts here.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+            <button 
+              onClick={() => setCurrentPage('signup')}
+              className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
               Get Started Today
             </button>
-            <button className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300">
+            <button 
+              onClick={() => setCurrentPage('login')}
+              className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300">
               Schedule Consultation
             </button>
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* Footer */}
-      {/* <footer id="contact" className="bg-gray-900 text-white py-16">
+      <footer id="contact" className="bg-gray-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
@@ -537,9 +730,16 @@ function LandingPage() {
               </div>
             </div>
           </div>
-
         </div>
-      </footer> */}
+      </footer>
+    </>
+  );
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+      {currentPage === 'landing' && renderLandingPageContent()}
+      {currentPage === 'login' && <LoginPage setCurrentPage={setCurrentPage} />}
+      {currentPage === 'signup' && <SignupPage setCurrentPage={setCurrentPage} />}
     </div>
   );
 }

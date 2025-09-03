@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./components/Pages/LandingPage";
 import Dashboard from "./components/Pages/Dashboard";
-import DhatriLogin from "./components/Auth/Login";
+import Login from "./components/Auth/Login";
+import SignupPage from "./components/Auth/SignUp";
 import NotFound from "./components/Pages/NotFound";
 import AppointmentsPage from "./components/Pages/Appointment";
 
@@ -26,17 +27,26 @@ function App() {
           element={!isLoggedIn ? <LandingPage /> : <Navigate to="/dashboard" />}
         />
 
-        {/* Logged-in users see dashboard */}
         <Route
-          path="/dashboard"
-          element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
+          path="/login"
+          element={<Login/>}
+        />
+        <Route
+          path="/signup"
+          element={<SignupPage/>}
         />
 
-        {/* Login page */}
+        {/* Logged-in users see dashboard */}
+        {/* <Route
+          path="/dashboard"
+          element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
+        /> */}
+
+        {/* Login page
         <Route
           path="/login"
           element={!isLoggedIn ? <DhatriLogin /> : <Navigate to="/dashboard" />}
-        />
+        /> */}
 
         <Route
         path="/notfound"
