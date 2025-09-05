@@ -6,7 +6,7 @@ import Login from "./components/Auth/Login";
 import SignupPage from "./components/Auth/SignUp";
 import NotFound from "./components/Pages/NotFound";
 import AppointmentsPage from "./components/Pages/Appointment";
-
+import ProfilePage from "./components/Pages/ProfilePage";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -34,6 +34,10 @@ function App() {
         <Route
           path="/signup"
           element={<SignupPage/>}
+        />
+        <Route 
+        path="/profilepage"
+        element={<ProfilePage/>}
         />
 
         {/* Logged-in users see dashboard */}
