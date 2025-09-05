@@ -310,7 +310,7 @@ function LandingPage() {
               <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
             </div> */}
             <div className="flex flex-col">
-              <span className="text-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent tracking-tight">
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent tracking-tight">
                 Dhatri Healthcare
               </span>
               <span className="text-xs text-gray-500 font-medium tracking-wide">
@@ -415,7 +415,7 @@ function LandingPage() {
       </div>
     </nav>
       {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-screen flex items-center">
+      <section className= "relative overflow-hidden min-h-screen flex items-center">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div 

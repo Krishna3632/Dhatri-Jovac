@@ -6,6 +6,8 @@ import Login from "./components/Auth/Login";
 import SignupPage from "./components/Auth/SignUp";
 import NotFound from "./components/Pages/NotFound";
 import AppointmentsPage from "./components/Pages/Appointment";
+import DoctorsPage from "./components/Pages/Doctors";
+import Patient from "./components/Pages/Patient";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -26,7 +28,14 @@ function App() {
           path="/"
           element={<LandingPage />}
         />
-
+                <Route
+          path="/doctors"
+          element={<DoctorsPage/>}
+        />
+                        {/* <Route
+          path="/patient"
+          element={<Patient/>}
+        /> */}
         <Route
           path="/login"
           element={<Login/>}
