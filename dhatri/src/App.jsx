@@ -24,7 +24,7 @@ function App() {
         {/* Non-logged-in users see landing page */}
         <Route
           path="/"
-          element={!isLoggedIn ? <LandingPage /> : <Navigate to="/dashboard" />}
+          element={<LandingPage />}
         />
 
         <Route
@@ -37,10 +37,10 @@ function App() {
         />
 
         {/* Logged-in users see dashboard */}
-        {/* <Route
+        <Route
           path="/dashboard"
-          element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
-        /> */}
+          element={<Dashboard />}
+        />
 
         {/* Login page
         <Route

@@ -303,14 +303,14 @@ function LandingPage() {
         <div className="flex justify-between items-center py-5">
           {/* Logo Section - Extreme Left */}
           <div className="flex items-center space-x-4 flex-shrink-0">
-            <div className="relative">
+            {/* <div className="relative">
               <div className="w-12 h-12 bg-gradient-to-br from-blue-600 via-blue-500 to-green-500 rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-all duration-300 hover:rotate-12">
                 <Heart className="w-7 h-7 text-white drop-shadow-sm" />
               </div>
               <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
-            </div>
+            </div> */}
             <div className="flex flex-col">
-              <span className="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent tracking-tight">
+              <span className="text-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent tracking-tight">
                 Dhatri Healthcare
               </span>
               <span className="text-xs text-gray-500 font-medium tracking-wide">
@@ -468,7 +468,7 @@ function LandingPage() {
               </div>
 
               {/* Quick Stats */}
-              <div className="grid grid-cols-2 gap-6 pt-8">
+              {/* <div className="grid grid-cols-2 gap-6 pt-8">
                 <div>
                   <div className="text-3xl font-bold text-gray-900">50K+</div>
                   <div className="text-gray-600">Lives Transformed</div>
@@ -477,7 +477,7 @@ function LandingPage() {
                   <div className="text-3xl font-bold text-gray-900">4.9★</div>
                   <div className="text-gray-600">Patient Satisfaction</div>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Right side feature card */}
@@ -546,7 +546,7 @@ function LandingPage() {
       </section>    
 
       {/* Stats Section */}
-      <section className="py-20 bg-white">
+      {/* <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -562,7 +562,7 @@ function LandingPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Features Section */}
       <section id="features" className="py-20 bg-gradient-to-br from-blue-50 to-green-50">
