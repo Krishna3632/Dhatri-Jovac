@@ -16,6 +16,7 @@ router.get('/doctors', async (req, res) => {
 }
 );
 
+
 router.post('/doctors', async (req, res) => {
     try {
         const newDoctor = new doctorsModel(req.body);
