@@ -1,4 +1,5 @@
-import {useState} from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const LoginPage = ({ setCurrentPage }) => {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
@@ -64,7 +65,7 @@ const LoginPage = ({ setCurrentPage }) => {
               onClick={() => setCurrentPage('signup')}
               className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
             >
-            <Link to='/login'>Sign Up</Link>
+              <Link to='/signup'>Sign Up</Link>
             </button>
           </p>
         </div>
