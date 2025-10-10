@@ -13,7 +13,7 @@ doctorRoutes.get('/doctors', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-
+ 
 // Get a single doctor by ID
 doctorRoutes.get('/doctors/:id', async (req, res) => {
   try {
