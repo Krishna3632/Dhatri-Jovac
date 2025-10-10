@@ -6,7 +6,7 @@ const DoctorsPage = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-  
+  const [loader, setLoader] = useState(false);
   // Sample doctors data
   const [doctors, setDoctors] = useState([
     {
@@ -372,7 +372,7 @@ const DoctorsPage = () => {
         {/* Add Doctor Form Modal */}
         {/* Add Doctor Form Modal */}
 {showAddForm && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+  <div className="fixed inset-0 bg-opacity-0 flex items-center justify-center p-4 z-50">
     <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
       <div className="p-6 border-b border-gray-200">
         <h2 className="text-2xl font-semibold text-gray-900">Add New Doctor</h2>

@@ -1,39 +1,65 @@
 import mongoose from 'mongoose';
 
-const DoctorSchema = new mongoose.Schema({
-  // A reference to the user's account, linking the doctor profile to a login.
+const doctorSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
+    required: [true, 'User reference is required']
   },
-  
-  // The doctor's full name.
   name: {
     type: String,
-    required: true,
+    required: [true, 'Name is required'],
+    trim: true,
+    minlength: [2, 'Name must be at least 2 characters long']
   },
-  
-  // The doctor's medical specialty.
   specialty: {
     type: String,
-    required: true,
+    required: [true, 'Specialty is required'],
+    trim: true
   },
-  
-  // A brief biography or description of the doctor.
   bio: {
     type: String,
+    trim: true,
+    maxlength: [500, 'Bio cannot be more than 500 characters']
   },
-  
-  // The doctor's professional qualifications.
-  qualifications: [String],
-  
-  // The doctor's professional registration number.
+  qualifications: [{
+    type: String,
+    trim: true
+  }],
   registrationNumber: {
     type: String,
-    required: true,
+    required: [true, 'Registration number is required'],
     unique: true,
+    trim: true,
+    validate: {
+      validator: function(v) {
+        return /^[A-Z0-9]+$/.test(v);
+      },
+      message: 'Registration number must contain only uppercase letters and numbers'
+    }
+  },
+  isAvailable: {
+    type: Boolean,
+    default: true
+  },
+  experience: {
+    type: Number,
+    min: [0, 'Experience years cannot be negative']
+  },
+  contactInfo: {
+    email: {
+      type: String,
+      match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please provide a valid email']
+    },
+    phone: {
+      type: String,
+      match: [/^[0-9]{10}$/, 'Please provide a valid 10-digit phone number']
+    }
   }
+}, {
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
-export default mongoose.model('Docters', DoctorSchema);
+export default mongoose.model('Doctor', doctorSchema);

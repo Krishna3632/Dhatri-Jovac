@@ -32,9 +32,9 @@ const LoginPage = ({ setCurrentPage }) => {
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
+
     console.log("Login submitted:", loginForm);
-    // You would typically send this data to an API
+
   };
 
   return (
@@ -276,7 +276,7 @@ function LandingPage() {
       let current = "";
 
       sections.forEach((section) => {
-        const sectionTop = section.offsetTop - 100; // adjust for navbar height
+        const sectionTop = section.offsetTop - 100; 
         const sectionHeight = section.clientHeight;
 
         if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
@@ -355,7 +355,6 @@ function LandingPage() {
             </button>
           </div>
 
-          {/* Mobile menu button and Get Started button */}
           <div className="flex items-center space-x-4">
             <button 
               onClick={() => setCurrentPage('login')}

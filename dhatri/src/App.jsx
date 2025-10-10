@@ -8,7 +8,11 @@ import NotFound from "./components/Pages/NotFound";
 import AppointmentsPage from "./components/Pages/Appointment";
 import DoctorsPage from "./components/Pages/Doctors";
 import Patient from "./components/Pages/Patient";
-
+import DoctorProfilePage from "./components/roles/doctor/Pages/DoctorProfile";
+import UserProfile from "./components/roles/doctor/Pages/PatientProfile";
+// import { AuthProvider } from "./context/AuthContext";
+// import ProtectedRoute from "./components/ProtectedRoutes";
+import Log from "./components/Auth/Log";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -21,34 +25,39 @@ function App() {
   }, []);
 
   return (
+    // <AuthProvider>
     <Router>
       <Routes>
         {/* Non-logged-in users see landing page */}
         <Route
           path="/"
-          element={<LandingPage />}
+          Component={LandingPage}
         />
                 <Route
           path="/doctors"
-          element={<DoctorsPage/>}
+          Component={DoctorsPage}
         />
                         {/* <Route
           path="/patient"
           element={<Patient/>}
         /> */}
         <Route
+          path="/log"
+          Component={Log}
+        />
+        <Route
           path="/login"
-          element={<Login/>}
+          Component={Login}
         />
         <Route
           path="/signup"
-          element={<SignupPage/>}
+          Component={SignupPage}
         />
 
         {/* Logged-in users see dashboard */}
         <Route
           path="/dashboard"
-          element={<Dashboard />}
+          Component={<Dashboard />}
         />
 
         {/* Login page
@@ -61,9 +70,15 @@ function App() {
         path="/notfound"
         element={<NotFound/>}
         />
-        <Route path="/appointments" element={<AppointmentsPage />} />
+        <Route path="/appointments" Component={AppointmentsPage} />
+        <Route path="/doctor/profile"
+           Component={DoctorProfilePage}
+        />
+        <Route path="/patient" Component={Patient} />
+        <Route path="/patient/profile/:id" Component={UserProfile} />
      </Routes>
     </Router>
+    // </AuthProvider>
   );
 }
 
