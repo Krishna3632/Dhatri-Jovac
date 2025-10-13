@@ -361,7 +361,7 @@ export default function PatientsPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end space-x-2">
-                        <Link to={`/users/${patient.id}`}>
+                        <Link to={`/doctor/users/${patient.id}`}>
                         <button 
                           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                           title="View Patient"

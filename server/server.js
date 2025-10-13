@@ -4,6 +4,7 @@ import doctorRoutes from './routes/doctors.js';
 import "./models/userModel.js"; // <-- register User schema globally
 import userRoutes from './routes/users.js';
 import cors from 'cors';
+import patientRoutes from './routes/patients.js';
 const app = express();
 const PORT = process.env.PORT || 4000;
 import authRoutes from "./routes/auth.js";
@@ -16,7 +17,7 @@ app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
   credentials: true,
 }));
-
+app.use("/api/patients", patientRoutes);
 app.use("/api/auth", authRoutes);
 // ✅ Mount the doctor routes
 app.use('/api/doctors', doctorRoutes);

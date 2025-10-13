@@ -12,7 +12,7 @@ import DoctorProfilePage from "./components/roles/doctor/Pages/DoctorProfile";
 import UserProfile from "./components/roles/doctor/Pages/PatientProfile";
 // import { AuthProvider } from "./context/AuthContext";
 // import ProtectedRoute from "./components/ProtectedRoutes";
-import Log from "./components/Auth/Log";
+import Log from "./components/Auth/Login";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -37,22 +37,26 @@ function App() {
           path="/doctors"
           Component={DoctorsPage}
         />
-                        {/* <Route
-          path="/patient"
-          element={<Patient/>}
-        /> */}
         <Route
-          path="/log"
-          Component={Log}
+          path="/patients"
+          Component={Patient}
         />
         <Route
           path="/login"
           Component={Login}
         />
+    
         <Route
           path="/signup"
           Component={SignupPage}
         />
+        {/* Doctors Routes  */}
+
+        <Route
+          path="/doctors/dashboard"
+          Component={Dashboard}
+        />
+
 
         {/* Logged-in users see dashboard */}
         <Route
@@ -74,8 +78,8 @@ function App() {
         <Route path="/doctor/profile"
            Component={DoctorProfilePage}
         />
-        <Route path="/patient" Component={Patient} />
-        <Route path="/patient/profile/:id" Component={UserProfile} />
+        {/* <Route path="/patient" Component={Patient} /> */}
+        <Route path="/patients/profile/:id" Component={UserProfile} />
      </Routes>
     </Router>
     // </AuthProvider>

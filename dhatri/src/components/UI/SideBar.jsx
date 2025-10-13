@@ -16,7 +16,7 @@ export default function SideBar({ sidebarNavItems, userNavItem, onNavigate }) {
         {sidebarNavItems.map((item) => (
           <NavLink
             key={item.id}
-            to={item.path}
+            to={`/doctor${item.path}`}
             className={({ isActive }) =>
               `p-3 rounded-lg transition-colors ${
                 isActive
@@ -34,7 +34,7 @@ export default function SideBar({ sidebarNavItems, userNavItem, onNavigate }) {
       <div className="mt-auto flex flex-col items-center space-y-6">
         {/* User Profile Icon */}
         <button
-          onClick={() => onNavigate(`/${userNavItem.path}`)}
+          onClick={() => onNavigate(userNavItem.path)}
           className="p-3 text-gray-500 hover:bg-gray-100 rounded-lg"
           title={userNavItem.id}
         >

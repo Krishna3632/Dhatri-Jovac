@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // --- SVG Icons ---
 
@@ -40,7 +40,9 @@ const IconActivity = ({ className }) => (
 
 export default function StatisticsPage() {
   const [selectedPeriod, setSelectedPeriod] = useState('month');
-
+  useEffect(() => {
+    document.title = "Doctor - Statistics";
+  },[]);
   const mainStats = [
     { 
       id: 1, 
