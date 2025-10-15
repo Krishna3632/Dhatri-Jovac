@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 
 // --- SVG Icons (replacing lucide-react for a self-contained file) ---
 
@@ -38,6 +38,9 @@ const IconCalendar = ({ className }) => (
     </svg>
 );
 export default function HomePage() {
+    useEffect(() => {
+      document.title = "Doctor - Home";
+    },[]);
   const KPI_data = [
     { id: 1, title: "Total Patients", value: "1,234", change: "+5%" },
     { id: 2, title: "Total Appointments", value: "567", change: "+3%" },
@@ -68,7 +71,7 @@ export default function HomePage() {
   }));
 
   return (
-    <div className="ml-20 p-6 bg-gray-50/50 min-h-screen">
+    <div className="ml-20 p-6 min-h-screen">
       {/* Header */}
       <header className="mb-8">
         <h1 className="text-4xl font-bold text-gray-800">Hey, Krishna!</h1>

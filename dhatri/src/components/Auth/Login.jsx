@@ -1,133 +1,171 @@
 import React, { useEffect, useState } from "react";
-import AnimatedLoader from "../UI/LoadingSpinner";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import checkToken from "../../utils/checkToken";
+import AnimatedLoader from "../UI/LoadingSpinner";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("patient"); // Default role is 'patient'
   const [loading, setLoading] = useState(false);
-  const [redirecting, setRedirecting] = useState(false);
-  const [role, setRole] = useState("patient"); // default role
-useEffect(() => {
-  document.title = "Login - Dhatri";
+  const [redirecting, setRedirecting] = useState(true); // Start with true to check token
+  const [error, setError] = useState("");
 
-  const verifyToken = async () => {
-    const data = await checkToken();
-    if (!data.error) {
-      setRedirecting(true); // show redirect loader
-      setTimeout(() => {
-        window.location.href = "/doctors";
-      }, 5000); // show loader for 1.5s
-    }
-  };
+  const navigate = useNavigate();
 
-  verifyToken();
-}, []);
+  // On component mount, check if the user is already logged in
+  useEffect(() => {
+    document.title = "Login - Dhatri";
 
+    const verifyTokenAndRedirect = async () => {
+      const data = await checkToken();
+      if (!data.error) {
+        // If token is valid, redirect based on role
+        const userRole = data.user.role;
+        const redirectPath = userRole === "doctor" ? `/${userRole}/` : `/${userRole}/home`;
+        setTimeout(() => navigate(redirectPath), 1500); // Show redirecting message briefly
+      } else {
+        // If no valid token, allow user to log in
+        setRedirecting(false);
+      }
+    };
+
+    verifyTokenAndRedirect();
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
+    setError(""); // Reset previous errors
 
     try {
-      const res = await fetch(`http://localhost:5000/api/auth/login`, {
+      const response = await fetch(`http://localhost:5000/api/auth/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        // Send email, password, AND role to the backend
+        credentials: true,
+        body: JSON.stringify({ email, password, role }),
       });
 
-      const data = await res.json();
-
+      const data = await response.json();
       setLoading(false);
 
-      if (res.ok) {
+      if (response.ok) {
+        // On successful login
         localStorage.setItem("token", data.token);
         setRedirecting(true);
-             
-        setTimeout(() => {
-          window.location.href = `/${data.user.role}s/dashboard`; // Redirect based on role
-        }, 1000);
+        
+        // Redirect based on role from the API response
+        const userRole = data.user.role;
+        const redirectPath = userRole === "doctor" ? `/${userRole}/home` : `/${userRole}/home`;
+        
+        setTimeout(() => navigate(redirectPath), 1500);
       } else {
-        alert(data.message || "Login failed");
+        // On failed login
+        setError(data.message || "Login failed. Please check your credentials.");
       }
-    } catch (error) {
+    } catch (err) {
       setLoading(false);
-      console.error(error);
-      alert("Something went wrong");
+      setError("Something went wrong. Please try again later.");
+      console.error(err);
     }
   };
-  
 
+  // If checking token or redirecting, show the loader and hide the form
+  if (redirecting) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
+        <AnimatedLoader state="redirecting" />
+      </div>
+    );
+  }
 
-return (
-  <div className="relative min-h-screen">
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col w-80 mx-auto mt-20 gap-4"
-    >
-<div className="flex gap-4">
-  <label>
-    <input
-      type="radio"
-      name="role"
-      value="patient"
-      checked={role === "patient"}
-      onChange={(e) => setRole(e.target.value)}
-    /> Patient
-  </label>
-  <label>
-    <input
-      type="radio"
-      name="role"
-      value="doctor"
-      checked={role === "doctor"}
-      onChange={(e) => setRole(e.target.value)}
-    /> Doctor
-  </label>
-</div>
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+        <div className="text-center">
+          <h2 className="text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+          <p className="mt-2 text-sm text-gray-600">Please select your role</p>
+        </div>
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        className="border p-2 rounded"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        className="border p-2 rounded"
-      />
-      <button
-        type="submit"
-        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-      >
-        Login
-      </button>
-    </form>
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+          {/* Role Selection */}
+          <div className="flex justify-center space-x-4">
+            <label className="flex items-center px-4 py-2 border rounded-md cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="patient"
+                checked={role === "patient"}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
+              />
+              <span className="ml-3 text-sm font-medium text-gray-700">Patient</span>
+            </label>
+            <label className="flex items-center px-4 py-2 border rounded-md cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="doctor"
+                checked={role === "doctor"}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
+              />
+              <span className="ml-3 text-sm font-medium text-gray-700">Doctor</span>
+            </label>
+          </div>
 
-   
-{(loading || redirecting) && (
-  <div className="fixed inset-0 backdrop-blur-sm bg-opacity-50 flex items-center justify-center z-50">
-    <AnimatedLoader 
-      state={loading ? "loading" : "redirecting"} 
-      pagename={loading ? "Login" : "Patient"} 
-    />
-  </div>
-)}
+          {/* Input Fields */}
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
+              />
+            </div>
+            <div>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Password"
+              />
+            </div>
+          </div>
 
-  </div>
-);
+          {/* Error Message */}
+          {error && <p className="text-sm text-center text-red-600">{error}</p>}
+
+          {/* Submit Button */}
+          <div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
+            >
+              {loading ? "Signing In..." : "Sign In"}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-75 backdrop-blur-sm">
+          <AnimatedLoader state="loading" pagename="Login" />
+        </div>
+      )}
+    </div>
+  );
 }
-
-
 
 export default Login;

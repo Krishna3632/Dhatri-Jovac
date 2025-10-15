@@ -112,7 +112,7 @@ export default function StatisticsPage() {
   const maxRevenue = Math.max(...monthlyData.map(d => d.revenue));
 
   return (
-    <div className="ml-20 p-6 bg-gray-50/50 min-h-screen">
+    <div className="ml-20 p-6 min-h-screen">
       {/* Header */}
       <header className="mb-8 flex justify-between items-center">
         <div>

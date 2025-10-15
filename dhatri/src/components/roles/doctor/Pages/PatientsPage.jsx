@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // --- SVG Icons ---
 
@@ -67,7 +67,10 @@ export default function PatientsPage() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("name");
   const [viewMode, setViewMode] = useState("table"); // table or cards
-
+  
+  useEffect(() => {
+    document.title = "Doctor - Patients";
+  }, []);
   // Enhanced patient data with more details
   const patients = [
     { 

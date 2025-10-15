@@ -13,7 +13,17 @@ import StatisticsPage from "./components/roles/doctor/Pages/StatisticsPage";
 import UserLayout from "./components/roles/doctor/layouts/dashboard/UserLayout";
 import UserProfile from "./components/roles/doctor/Pages/PatientProfile";
 import AppLayout from "./components/roles/doctor/layouts/dashboard/AppLayout";
+import Login from "./components/Auth/Login";
 const DoctorRoutes = createBrowserRouter([
+  {
+    path:"/",
+    children: [
+      {
+        path: "login",
+        Component: Login
+      }
+    ]
+  },
   {
     path: "/doctor",
     element: <AppLayout />,
