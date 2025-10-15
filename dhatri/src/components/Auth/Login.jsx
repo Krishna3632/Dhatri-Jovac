@@ -39,7 +39,6 @@ function Login() {
       const response = await fetch(`http://localhost:5000/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // Send email, password, AND role to the backend
         credentials: true,
         body: JSON.stringify({ email, password, role }),
       });
