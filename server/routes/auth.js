@@ -14,7 +14,7 @@ const createToken = (user) => {
   return jwt.sign(
     { userId: user._id, email: user.email, role: user.role },
     process.env.JWT_SECRET || "your-secret-key",
-    { expiresIn: "5m" }
+    { expiresIn: "24h" } // extended from 5m → 24h
   );
 };
 
@@ -23,23 +23,18 @@ router.post("/register", async (req, res) => {
   try {
     const { name, email, password, role, phoneNumber, address } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password)
       return res.status(400).json({ message: "Please provide all required fields" });
-    }
-    if (!isValidEmail(email)) {
-      return res.status(400).json({ message: "Please provide a valid email address" });
-    }
-    if (!isStrongPassword(password)) {
+    if (!isValidEmail(email))
+      return res.status(400).json({ message: "Invalid email address" });
+    if (!isStrongPassword(password))
       return res.status(400).json({ message: "Password must be at least 6 characters long" });
-    }
 
     const existingUser = await userModel.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User with this email already exists" });
-    }
+    if (existingUser)
+      return res.status(400).json({ message: "User already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 12);
-
     const newUser = new userModel({
       name,
       email,
@@ -47,7 +42,7 @@ router.post("/register", async (req, res) => {
       role,
       phoneNumber,
       address,
-      lastLogin: new Date()
+      lastLogin: new Date(),
     });
 
     const savedUser = await newUser.save();
@@ -55,22 +50,17 @@ router.post("/register", async (req, res) => {
 
     const userResponse = savedUser.toObject();
     delete userResponse.password;
-    delete userResponse.resetPasswordToken;
-    delete userResponse.resetPasswordExpires;
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
+      secure: false, // true in production (HTTPS)
       sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.status(201).json({ user: userResponse, token });
   } catch (error) {
     console.error(error);
-    if (error.name === "ValidationError") {
-      return res.status(400).json({ message: error.message });
-    }
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -79,7 +69,8 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ message: "Email and password are required" });
+    if (!email || !password)
+      return res.status(400).json({ message: "Email and password are required" });
 
     const user = await userModel.findOne({ email });
     if (!user) return res.status(401).json({ message: "Invalid credentials" });
@@ -97,13 +88,11 @@ router.post("/login", async (req, res) => {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
-      maxAge: 5 * 60 * 1000,
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     const userResponse = user.toObject();
     delete userResponse.password;
-    delete userResponse.resetPasswordToken;
-    delete userResponse.resetPasswordExpires;
 
     res.json({ user: userResponse, token });
   } catch (error) {
@@ -123,11 +112,6 @@ router.get("/check-token", (req, res) => {
   } catch (error) {
     res.status(401).json({ error: "Invalid token" });
   }
-});
-
-// ✅ PROFILE (Protected)
-router.get("/profile", authMiddleware, (req, res) => {
-  res.json({ message: "Welcome to your profile!", user: req.user });
 });
 
 // ✅ LOGOUT

@@ -20,7 +20,7 @@ function Login() {
       if (!data.error) {
    
         const userRole = data.user.role;
-        const redirectPath = userRole === "doctor" ? `/${userRole}/` : `/${userRole}/home`;
+        const redirectPath = userRole === "doctor" ? `/${userRole}/home` : `/${userRole}/home`;
         navigate(redirectPath);
       } else {
         setRedirecting(false);
@@ -39,7 +39,7 @@ function Login() {
       const response = await fetch(`http://localhost:5000/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: true,
+        credentials: "include",
         body: JSON.stringify({ email, password, role }),
       });
 
@@ -148,12 +148,12 @@ function Login() {
         </form>
       </div>
 
-      {/* Loading Overlay */}
+      {/* Loading Overlay
       {loading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-75 backdrop-blur-sm">
           <AnimatedLoader state="loading" pagename="Login" />
         </div>
-      )}
+      )} */}
     </div>
   );
 }

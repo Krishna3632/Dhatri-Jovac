@@ -3,7 +3,10 @@ import axios from 'axios';
 export default async function checkToken() {
   try {
     const res = await axios.get('http://localhost:5000/api/auth/check-token', {
-      withCredentials: true, 
+ withCredentials: true, // ✅ this is crucial for sending cookies
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
     console.log(res.data); 
     return res.data;
