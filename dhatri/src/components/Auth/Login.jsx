@@ -1,76 +1,171 @@
-import {useState} from 'react';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import checkToken from "../../utils/checkToken";
+import AnimatedLoader from "../UI/LoadingSpinner";
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("patient"); // Default role is 'patient'
+  const [loading, setLoading] = useState(false);
+  const [redirecting, setRedirecting] = useState(true); // Start with true to check token
+  const [error, setError] = useState("");
 
-const LoginPage = ({ setCurrentPage }) => {
-  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
+  const navigate = useNavigate();
 
-  const handleLoginFormChange = (e) => {
-    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
-  };
+  // On component mount, check if the user is already logged in
+  useEffect(() => {
+    document.title = "Login - Dhatri";
 
-  const handleLoginSubmit = (e) => {
+    const verifyTokenAndRedirect = async () => {
+      const data = await checkToken();
+      if (!data.error) {
+        // If token is valid, redirect based on role
+        const userRole = data.user.role;
+        const redirectPath = userRole === "doctor" ? `/${userRole}/` : `/${userRole}/home`;
+        setTimeout(() => navigate(redirectPath), 1500); // Show redirecting message briefly
+      } else {
+        // If no valid token, allow user to log in
+        setRedirecting(false);
+      }
+    };
+
+    verifyTokenAndRedirect();
+  }, [navigate]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login submitted:", loginForm);
-    // You would typically send this data to an API
+    setLoading(true);
+    setError(""); // Reset previous errors
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // Send email, password, AND role to the backend
+        credentials: true,
+        body: JSON.stringify({ email, password, role }),
+      });
+
+      const data = await response.json();
+      setLoading(false);
+
+      if (response.ok) {
+        // On successful login
+        localStorage.setItem("token", data.token);
+        setRedirecting(true);
+        
+        // Redirect based on role from the API response
+        const userRole = data.user.role;
+        const redirectPath = userRole === "doctor" ? `/${userRole}/home` : `/${userRole}/home`;
+        
+        setTimeout(() => navigate(redirectPath), 1500);
+      } else {
+        // On failed login
+        setError(data.message || "Login failed. Please check your credentials.");
+      }
+    } catch (err) {
+      setLoading(false);
+      setError("Something went wrong. Please try again later.");
+      console.error(err);
+    }
   };
+
+  // If checking token or redirecting, show the loader and hide the form
+  if (redirecting) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
+        <AnimatedLoader state="redirecting" />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50">
-      <div className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl w-full max-w-md">
-        <button 
-          onClick={() => setCurrentPage('landing')} 
-          className="text-gray-500 hover:text-blue-600 transition-colors mb-4 flex items-center"
-        >
-          <ArrowRight className="w-5 h-5 mr-2 rotate-180" /> Back to Landing
-        </button>
-        <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">
-          Welcome Back
-        </h2>
-        <form onSubmit={handleLoginSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={loginForm.email}
-              onChange={handleLoginFormChange}
-              required
-              className="mt-1 block w-full rounded-xl border-2 border-gray-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={loginForm.password}
-              onChange={handleLoginFormChange}
-              required
-              className="mt-1 block w-full rounded-xl border-2 border-gray-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full flex justify-center py-3 px-4 rounded-xl shadow-lg font-bold text-white bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 transition-all transform hover:scale-105"
-          >
-            Log In
-          </button>
-        </form>
-        <div className="text-center mt-6">
-          <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
-            <button
-              type="button"
-              onClick={() => setCurrentPage('signup')}
-              className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
-            >
-            <Link to='/login'>Sign Up</Link>
-            </button>
-          </p>
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+        <div className="text-center">
+          <h2 className="text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+          <p className="mt-2 text-sm text-gray-600">Please select your role</p>
         </div>
+
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+          {/* Role Selection */}
+          <div className="flex justify-center space-x-4">
+            <label className="flex items-center px-4 py-2 border rounded-md cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="patient"
+                checked={role === "patient"}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
+              />
+              <span className="ml-3 text-sm font-medium text-gray-700">Patient</span>
+            </label>
+            <label className="flex items-center px-4 py-2 border rounded-md cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="doctor"
+                checked={role === "doctor"}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
+              />
+              <span className="ml-3 text-sm font-medium text-gray-700">Doctor</span>
+            </label>
+          </div>
+
+          {/* Input Fields */}
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
+              />
+            </div>
+            <div>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Password"
+              />
+            </div>
+          </div>
+
+          {/* Error Message */}
+          {error && <p className="text-sm text-center text-red-600">{error}</p>}
+
+          {/* Submit Button */}
+          <div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
+            >
+              {loading ? "Signing In..." : "Sign In"}
+            </button>
+          </div>
+        </form>
       </div>
+
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-75 backdrop-blur-sm">
+          <AnimatedLoader state="loading" pagename="Login" />
+        </div>
+      )}
     </div>
   );
-};
+}
 
-export default LoginPage;
+export default Login;
