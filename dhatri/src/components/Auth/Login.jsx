@@ -18,12 +18,11 @@ function Login() {
     const verifyTokenAndRedirect = async () => {
       const data = await checkToken();
       if (!data.error) {
-        // If token is valid, redirect based on role
+   
         const userRole = data.user.role;
         const redirectPath = userRole === "doctor" ? `/${userRole}/` : `/${userRole}/home`;
-        setTimeout(() => navigate(redirectPath), 1500); // Show redirecting message briefly
+        navigate(redirectPath);
       } else {
-        // If no valid token, allow user to log in
         setRedirecting(false);
       }
     };
