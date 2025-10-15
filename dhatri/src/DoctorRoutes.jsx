@@ -1,12 +1,4 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-// import AppLayout from "./components/layouts/AppLayout";
-// // impor
-// import AppLayout from "./components/layouts/AppLayout";
-// import HomePage from "./components/Pages/HomePage";
-// import PatientsPage from "./components/Pages/PatientsPage";
-// import StatisticsPage from "./components/Pages/StatisticsPage";
-// import UserLayout from "./components/layouts/UserLayout";
-// import UserProfile from "./components/Pages/PatientProfile";
 import HomePage from "./components/roles/doctor/Pages/HomePage";
 import PatientsPage from "./components/roles/doctor/Pages/PatientsPage";
 import StatisticsPage from "./components/roles/doctor/Pages/StatisticsPage";
@@ -29,7 +21,7 @@ const DoctorRoutes = createBrowserRouter([
     element: <AppLayout />,
     children: [
 
-      { path: "", element: <Navigate to="home" replace /> },
+      { path: "", Component: <Navigate to="home" replace /> },
 
       {
         path: "home",

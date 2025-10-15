@@ -57,11 +57,7 @@ function App() {
           Component={<Dashboard />}
         />
 
-        {/* Login page
-        <Route
-          path="/login"
-          element={!isLoggedIn ? <DhatriLogin /> : <Navigate to="/dashboard" />}
-        /> */}
+
 
         <Route
         path="/notfound"
