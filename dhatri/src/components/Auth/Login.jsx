@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import checkToken from "../../utils/checkToken";
-import AnimatedLoader from "../UI/LoadingSpinner";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -70,14 +69,7 @@ function Login() {
     }
   };
 
-  // If checking token or redirecting, show the loader and hide the form
-  if (redirecting) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
-        <AnimatedLoader state="redirecting" />
-      </div>
-    );
-  }
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
