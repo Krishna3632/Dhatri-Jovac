@@ -6,12 +6,37 @@ const patientRoutes = express.Router();
 patientRoutes.get('/getAll', async (req, res) => {
     try {
         const patients = await patientModel.find();
-        res.json(patients);
+        const filteredPatients = patients.filter(p => p.isDoctor === false);
+        res.json(filteredPatients);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
     }
 });
 
+patientRoutes.get('/profile/:id',async (req, res) => {
+    try {
+        const patient = [await patientModel.findById(req.params.id)];
+        if (!patient) {
+            return res.status(404).json({ message: 'Patient not found' });
+        }
+        res.json(patient);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+patientRoutes.delete('/delete/:id', async (req, res) => {
+    try {
+        const patient = await patientModel.findByIdAndDelete(req.params.id);
+        if (!patient) {
+            return res.status(404).json({ message: 'Patient not found' });
+        }
+        res.json({ message: 'Patient deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 
 export default patientRoutes;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect, use } from 'react';
 import { useParams } from 'react-router-dom';
 
 // --- SVG Icons ---
@@ -62,49 +62,19 @@ export default function UserProfile() {
   const [activeTab, setActiveTab] = useState('overview');
 
   // Mock patient data - in real app this would come from API based on ID
-  const patientData = {
-    1: {
-      name: "John Doe",
-      age: 45,
-      gender: "Male",
-      phone: "+1 (555) 123-4567",
-      email: "john.doe@email.com",
-      address: "123 Main St, New York, NY 10001",
-      dateOfBirth: "1978-05-15",
-      bloodType: "A+",
-      height: "5'10\"",
-      weight: "180 lbs",
-      emergencyContact: "Jane Doe - (555) 987-6543"
-    },
-    2: {
-      name: "Jane Smith",
-      age: 32,
-      gender: "Female",
-      phone: "+1 (555) 234-5678",
-      email: "jane.smith@email.com",
-      address: "456 Oak Ave, Los Angeles, CA 90210",
-      dateOfBirth: "1991-08-22",
-      bloodType: "O-",
-      height: "5'6\"",
-      weight: "135 lbs",
-      emergencyContact: "Mike Smith - (555) 876-5432"
-    },
-    default: {
-      name: `Patient ${id}`,
-      age: 35,
-      gender: "Unknown",
-      phone: "+1 (555) 000-0000",
-      email: `patient${id}@email.com`,
-      address: "Address not available",
-      dateOfBirth: "1988-01-01",
-      bloodType: "Unknown",
-      height: "Unknown",
-      weight: "Unknown",
-      emergencyContact: "Not provided"
-    }
-  };
+  const [patientData,setPatientData] = useState([]);
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/patients/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setPatientData(data);
+        console.log(data);
+      }
+      )
+      .catch((error) => console.error("Error fetching patient data:", error));
+  }, [id]);
 
-  const patient = patientData[id] || patientData.default;
+  const patient = patientData;
 
   const vitals = [
     { label: "Blood Pressure", value: "120/80", status: "normal", color: "text-green-600" },
@@ -113,24 +83,10 @@ export default function UserProfile() {
     { label: "Oxygen Saturation", value: "98%", status: "normal", color: "text-green-600" },
   ];
 
-  const recentAppointments = [
-    { date: "2024-09-10", type: "Regular Checkup", doctor: "Dr. Smith", status: "Completed" },
-    { date: "2024-08-15", type: "Blood Test", doctor: "Dr. Johnson", status: "Completed" },
-    { date: "2024-07-20", type: "Vaccination", doctor: "Dr. Smith", status: "Completed" },
-    { date: "2024-09-25", type: "Follow-up", doctor: "Dr. Smith", status: "Scheduled" },
-  ];
+  const [recentAppointments, setRecentAppointments] = useState([]);
 
-  const medications = [
-    { name: "Lisinopril", dosage: "10mg", frequency: "Once daily", prescribedBy: "Dr. Smith" },
-    { name: "Metformin", dosage: "500mg", frequency: "Twice daily", prescribedBy: "Dr. Johnson" },
-    { name: "Vitamin D3", dosage: "1000 IU", frequency: "Once daily", prescribedBy: "Dr. Smith" },
-  ];
-
-  const medicalHistory = [
-    { condition: "Hypertension", diagnosedDate: "2020-03-15", status: "Ongoing" },
-    { condition: "Type 2 Diabetes", diagnosedDate: "2019-11-08", status: "Managed" },
-    { condition: "Seasonal Allergies", diagnosedDate: "2018-04-22", status: "Seasonal" },
-  ];
+  const [medications, setMedications] = useState([]);
+  const [medicalHistory, setMedicalHistory] = useState([]);
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: IconUser },
@@ -150,7 +106,7 @@ export default function UserProfile() {
           <div>
             <h1 className="text-4xl font-bold text-gray-800">{patient.name}</h1>
             <p className="text-gray-500">Patient ID: #{id}</p>
-            <div className="flex items-center space-x-4 mt-2">
+            <div className="flex items-center space-x-4 mt-2">  
               <span className="text-sm text-gray-600">{patient.age} years old</span>
               <span className="text-sm text-gray-600">•</span>
               <span className="text-sm text-gray-600">{patient.gender}</span>
@@ -159,10 +115,7 @@ export default function UserProfile() {
             </div>
           </div>
         </div>
-        <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-          <IconEdit className="w-4 h-4" />
-          <span>Edit Profile</span>
-        </button>
+
       </header>
 
       {/* Contact Information Cards */}
@@ -174,7 +127,7 @@ export default function UserProfile() {
             </div>
             <div>
               <p className="text-sm text-gray-600">Phone</p>
-              <p className="font-semibold text-gray-800">{patient.phone}</p>
+              <p className="font-semibold text-gray-800">{patient.phoneNumber}</p>
             </div>
           </div>
         </div>

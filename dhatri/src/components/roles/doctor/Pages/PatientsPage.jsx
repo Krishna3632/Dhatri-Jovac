@@ -67,92 +67,39 @@ export default function PatientsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("name");
-
-  const { patients } = useData();
+  const [showLoader, setShowLoader] = useState(true);
+  const { patients , refreshPatients} = useData();
+  const { patientData, setPatientsData} = useState(patients);
+  const [deleteForm, setDeleteForm] = useState(false);
+  const [patientIdToDelete, setPatientIdToDelete] = useState(null);
+  const [prescribeForm, setPrescribeForm] = useState(false);
   useEffect(() => {
     document.title = "Doctor - Patients";
   }, []);
-  // Enhanced patient data with more details
-  // const patients = [
-  //   { 
-  //     id: 1, 
-  //     name: "John Doe", 
-  //     age: 34, 
-  //     gender: "Male",
-  //     phone: "+1 (555) 123-4567",
-  //     email: "john.doe@email.com",
-  //     lastVisit: "2025-09-10", 
-  //     nextAppointment: "2025-09-25",
-  //     status: "Active",
-  //     condition: "Hypertension",
-  //     doctor: "Dr. Smith"
-  //   },
-  //   { 
-  //     id: 2, 
-  //     name: "Jane Smith", 
-  //     age: 28, 
-  //     gender: "Female",
-  //     phone: "+1 (555) 234-5678",
-  //     email: "jane.smith@email.com",
-  //     lastVisit: "2025-09-12", 
-  //     nextAppointment: null,
-  //     status: "Inactive",
-  //     condition: "Routine Checkup",
-  //     doctor: "Dr. Johnson"
-  //   },
-  //   { 
-  //     id: 3, 
-  //     name: "Alex Johnson", 
-  //     age: 42, 
-  //     gender: "Male",
-  //     phone: "+1 (555) 345-6789",
-  //     email: "alex.johnson@email.com",
-  //     lastVisit: "2025-09-14", 
-  //     nextAppointment: "2025-09-28",
-  //     status: "Active",
-  //     condition: "Diabetes",
-  //     doctor: "Dr. Smith"
-  //   },
-  //   { 
-  //     id: 4, 
-  //     name: "Emily Brown", 
-  //     age: 31, 
-  //     gender: "Female",
-  //     phone: "+1 (555) 456-7890",
-  //     email: "emily.brown@email.com",
-  //     lastVisit: "2025-09-15", 
-  //     nextAppointment: "2025-09-22",
-  //     status: "Active",
-  //     condition: "Allergies",
-  //     doctor: "Dr. Wilson"
-  //   },
-  //   { 
-  //     id: 5, 
-  //     name: "Michael Chen", 
-  //     age: 39, 
-  //     gender: "Male",
-  //     phone: "+1 (555) 567-8901",
-  //     email: "michael.chen@email.com",
-  //     lastVisit: "2025-09-08", 
-  //     nextAppointment: null,
-  //     status: "Inactive",
-  //     condition: "Back Pain",
-  //     doctor: "Dr. Johnson"
-  //   },
-  //   { 
-  //     id: 6, 
-  //     name: "Sarah Wilson", 
-  //     age: 45, 
-  //     gender: "Female",
-  //     phone: "+1 (555) 678-9012",
-  //     email: "sarah.wilson@email.com",
-  //     lastVisit: "2025-09-16", 
-  //     nextAppointment: "2025-09-30",
-  //     status: "Active",
-  //     condition: "Anxiety",
-  //     doctor: "Dr. Smith"
-  //   }
-  // ];
+  
+
+
+       useEffect(() => {
+       const timer = setTimeout(() => {
+         setShowLoader(false);
+       }, 2000);
+       return () => clearTimeout(timer);
+     }
+        
+     , []);
+     
+     useEffect(() => {
+       if (patients && patients.length > 0) {
+         console.log("Patients data from context:", patients);
+       }
+     }, [patients]);
+     if (showLoader) {
+       return (
+         <div className="flex items-center justify-center min-h-screen">
+           <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
+         </div>
+       )
+     }
 
   // Filter and sort patients
   let filteredPatients = patients.filter((p) => {
@@ -171,27 +118,40 @@ export default function PatientsPage() {
     return 0;
   });
 
-  // Statistics
+
   const stats = {
     total: patients.length,
-    active: patients.filter(p => p.status === "Active").length,
-    inactive: patients.filter(p => p.status === "Inactive").length,
-    appointments: patients.filter(p => p.nextAppointment).length
+    active: patients.filter(p => p.isActive === true).length,
+    inactive: patients.filter(p => p.isActive === false).length,
+    appointments: "-",
   };
 
   const handlePatientView = (patientId) => {
     // In a real app, this would navigate to /users/${patientId}
     alert(`Viewing patient ${patientId}`);
   };
-
-  const handlePatientEdit = (patientId) => {
-    alert(`Editing patient ${patientId}`);
+  const handlePrescribe = (patientId) => {
+       
   };
 
   const handlePatientDelete = (patientId) => {
-    if (confirm("Are you sure you want to delete this patient?")) {
-      alert(`Deleting patient ${patientId}`);
-    }
+     fetch(`http://localhost:5000/api/patients/delete/${patientId}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert(`Patient ${patientId} deleted successfully.`);
+        } else {
+          alert(`Failed to delete patient ${patientId}.`);
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting patient:", error);
+        alert(`Error deleting patient ${patientId}.`);
+      });
+      refreshPatients();
   };
 
   return (
@@ -204,10 +164,7 @@ export default function PatientsPage() {
             Manage and view all registered patients here.
           </p>
         </div>
-        <button className="flex items-center space-x-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md transition-all transform hover:-translate-y-0.5">
-          <IconPlus className="w-4 h-4" />
-          <span>Add Patient</span>
-        </button>
+  
       </header>
 
       {/* Statistics Cards */}
@@ -374,14 +331,20 @@ export default function PatientsPage() {
                         </button>
                         </Link>
                         <button 
-                          onClick={() => handlePatientEdit(patient.id)}
+                          onClick={() => {
+                            handlePrescribe(patient._id);
+                            setPrescribeForm(true);
+                          }}
                           className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
-                          title="Edit Patient"
+                          title="Prescribe Patient"
                         >
                           <IconEdit className="w-4 h-4" />
                         </button>
                         <button 
-                          onClick={() => handlePatientDelete(patient.id)}
+                          onClick={() => {
+                          setDeleteForm(true)
+                          setPatientIdToDelete(patient._id)
+                          }}
                           className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                           title="Delete Patient"
                         >
@@ -416,6 +379,48 @@ export default function PatientsPage() {
           <p className="text-gray-500">
             Showing {filteredPatients.length} of {patients.length} patients
           </p>
+        </div>
+      )}
+      {
+        prescribeForm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Prescribe Medication</h2>
+            <p className="text-gray-600 mb-6">Prescribing functionality is under development.</p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setPrescribeForm(false)}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {deleteForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Confirm Deletion</h2>
+            <p className="text-gray-600 mb-6">Are you sure you want to delete this patient? This action cannot be undone.</p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => {
+                  setDeleteForm(false);
+                  handlePatientDelete(patientIdToDelete);
+                }}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg"
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => setDeleteForm(false)}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

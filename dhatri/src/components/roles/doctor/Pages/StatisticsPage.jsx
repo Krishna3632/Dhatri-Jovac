@@ -45,40 +45,24 @@ export default function StatisticsPage() {
   },[]);
   const mainStats = [
     { 
-      id: 1, 
+      id: 1,
       title: "Total Patients", 
-      value: "1,234", 
-      change: "+12%", 
-      icon: IconUsers,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50"
+    
     },
     { 
       id: 2, 
       title: "Total Appointments", 
-      value: "2,567", 
-      change: "+8%", 
-      icon: IconCalendar,
-      color: "text-green-600",
-      bgColor: "bg-green-50"
+
     },
     { 
       id: 3, 
       title: "Revenue This Month", 
-      value: "$45,230", 
-      change: "+15%", 
-      icon: IconDollarSign,
-      color: "text-purple-600",
-      bgColor: "bg-purple-50"
+    
     },
     { 
       id: 4, 
       title: "Average Wait Time", 
-      value: "12 min", 
-      change: "-5%", 
-      icon: IconClock,
-      color: "text-orange-600",
-      bgColor: "bg-orange-50"
+     
     }
   ];
 
@@ -108,8 +92,8 @@ export default function StatisticsPage() {
     { condition: "Allergies", patients: 123, percentage: 10 },
   ];
 
-  const maxPatients = Math.max(...monthlyData.map(d => d.patients));
-  const maxRevenue = Math.max(...monthlyData.map(d => d.revenue));
+  // const maxPatients = Math.max(...monthlyData.map(d => d.patients));
+  // const maxRevenue = Math.max(...monthlyData.map(d => d.revenue));
 
   return (
     <div className="ml-20 p-6 min-h-screen">
@@ -143,8 +127,8 @@ export default function StatisticsPage() {
           return (
             <div key={stat.id} className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
               <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 rounded-lg ${stat.bgColor}`}>
-                  <IconComponent className={`w-6 h-6 ${stat.color}`} />
+                <div className={`p-3 rounded-lg `}>
+                  <IconComponent className={`w-6 h-6 `} />
                 </div>
                 <IconTrendingUp className="w-4 h-4 text-gray-400" />
               </div>
