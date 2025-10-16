@@ -130,9 +130,9 @@ export default function PatientsPage() {
     // In a real app, this would navigate to /users/${patientId}
     alert(`Viewing patient ${patientId}`);
   };
-  const handlePrescribe = (patientId) => {
+  // const handlePrescribe = (patientId) => {
        
-  };
+  // };
 
   const handlePatientDelete = (patientId) => {
      fetch(`http://localhost:5000/api/patients/delete/${patientId}`, {

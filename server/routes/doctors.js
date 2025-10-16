@@ -1,6 +1,8 @@
 import express from 'express';
 import doctorsModel from '../models/doctorsModel.js';
-
+import patientModel from '../models/patientModel.js';
+import medicationSchema from '../models/medicationSchema.js';
+import userModel from '../models/userModel.js';
 const doctorRoutes = express.Router();
 
 
@@ -15,9 +17,9 @@ doctorRoutes.get('/doctors', async (req, res) => {
 });
  
 
-doctorRoutes.get('/doctors/:id', async (req, res) => {
+doctorRoutes.get('/:id', async (req, res) => {
   try {
-    const doctor = await doctorsModel.findById(req.params.id).populate('user', '-password');
+    const doctor = await userModel.findById(req.params.id).populate('user', '-password');
     if (!doctor) {
       return res.status(404).json({ message: 'Doctor not found' });
     }
@@ -28,12 +30,10 @@ doctorRoutes.get('/doctors/:id', async (req, res) => {
   }
 });
 
-// Create a new doctor
-doctorRoutes.post('/doctors', async (req, res) => {
+doctorRoutes.post('/addDoctor', async (req, res) => {
   try {
     const { name, specialty, bio, qualifications, registrationNumber, userId } = req.body;
-    
-    // Check if registration number already exists
+  
     const existingDoctor = await doctorsModel.findOne({ registrationNumber });
     if (existingDoctor) {
       return res.status(400).json({ message: 'Registration number already exists' });
@@ -60,7 +60,7 @@ doctorRoutes.post('/doctors', async (req, res) => {
 });
 
 
-doctorRoutes.put('/doctors/:id', async (req, res) => {
+doctorRoutes.put('/:id', async (req, res) => {
   try {
     const updatedDoctor = await doctorsModel.findByIdAndUpdate(
       req.params.id,
@@ -81,15 +81,36 @@ doctorRoutes.put('/doctors/:id', async (req, res) => {
 });
 
 
-doctorRoutes.delete('/doctors/:id', async (req, res) => {
+
+
+
+doctorRoutes.post('/addPrescription', async (req, res) => {
   try {
-    const deletedDoctor = await doctorsModel.findByIdAndDelete(req.params.id);
-    if (!deletedDoctor) {
+    const { doctorId, patientId, medicationName, dosage, frequency, startDate, endDate, notes } = req.body;
+
+    const doctor = await userModel.findById(doctorId);
+    if (!doctor) {
       return res.status(404).json({ message: 'Doctor not found' });
     }
-    res.status(200).json({ message: 'Doctor deleted successfully' });
+    const patient = await userModel.findById(patientId);
+    if (!patient) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+    const newMedication = new medicationSchema({
+      patient: patientId,
+      medicationName,
+      dosage,
+      frequency,
+      startDate,
+      endDate,
+      prescribedBy: doctorId,
+      notes
+    });
+
+    const savedMedication = await newMedication.save();
+    res.status(201).json(savedMedication);
   } catch (error) {
-    console.error('Error deleting doctor:', error);
+    console.error('Error adding prescription:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });

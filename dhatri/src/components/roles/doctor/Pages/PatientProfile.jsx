@@ -60,8 +60,6 @@ const IconEdit = ({ className }) => (
 export default function UserProfile() {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('overview');
-
-  // Mock patient data - in real app this would come from API based on ID
   const [patientData,setPatientData] = useState([]);
   useEffect(() => {
     fetch(`http://localhost:5000/api/patients/${id}`)
@@ -86,7 +84,28 @@ export default function UserProfile() {
   const [recentAppointments, setRecentAppointments] = useState([]);
 
   const [medications, setMedications] = useState([]);
-  const [medicalHistory, setMedicalHistory] = useState([]);
+  // const [medicalHistory, setMedicalHistory] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/patients/medications/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setMedications(data);
+        console.log(data);
+      })
+      .catch((error) => console.error("Error fetching medications:", error));
+  }, [id]);
+
+  medications['prescribedBy'] = async function getDoctorName(doctorId) {
+    try {
+      const response = await fetch(`http://localhost:5000/api/doctors/${doctorId}`);
+      const doctor = await response.json();
+      return doctor.name;
+    } catch (error) {
+      console.error("Error fetching doctor name:", error);
+      return "Unknown Doctor";
+    }
+  };
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: IconUser },
@@ -273,7 +292,7 @@ export default function UserProfile() {
                       <IconHeart className="w-5 h-5 text-red-600" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-800">{medication.name}</p>
+                      <p className="font-semibold text-gray-800">{medication.medicationName}</p>
                       <p className="text-sm text-gray-600">{medication.dosage} • {medication.frequency}</p>
                       <p className="text-xs text-gray-500">Prescribed by {medication.prescribedBy}</p>
                     </div>
