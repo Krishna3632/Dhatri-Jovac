@@ -1,5 +1,6 @@
+import axios from "axios";
 import React, { useState , useEffect} from "react";
-
+import { useData } from "../../../../context/DataContext";
 // --- SVG Icons (replacing lucide-react for a self-contained file) ---
 
 const IconHeart = ({ className }) => (
@@ -37,15 +38,40 @@ const IconCalendar = ({ className }) => (
         <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line>
     </svg>
 );
+// let patient =[];
+
+// const [patients, setPatients] = useState(null);
 export default function HomePage() {
+    const { patients } = useData();
+    const [showLoader, setShowLoader] = useState(true);
     useEffect(() => {
-      document.title = "Doctor - Home";
-    },[]);
+    const timer = setTimeout(() => {
+      setShowLoader(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }
+     
+  , []);
+  
+  useEffect(() => {
+    if (patients && patients.length > 0) {
+      console.log("Patients data from context:", patients);
+    }
+  }, [patients]);
+  if (showLoader) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
+      </div>
+    )
+  }
   const KPI_data = [
-    { id: 1, title: "Total Patients", value: "1,234", change: "+5%" },
-    { id: 2, title: "Total Appointments", value: "567", change: "+3%" },
-    { id: 3, title: "Avg. Hours/Week", value: "38", change: "+8%" },
+    { id: 1, title: "Total Patients", value: patients.length, change: "-" },
+    { id: 2, title: "Total Appointments", value: "-", change: "-" },
+    { id: 3, title: "Avg. Hours/Week", value: "-", change: "-" },
   ];
+
+
 
   const appointmentsData = [
     { day: "Mon", value: 4 },
@@ -89,9 +115,9 @@ export default function HomePage() {
                 <div key={kpi.id} className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
                     <h2 className="text-lg font-medium text-gray-600">{kpi.title}</h2>
                     <p className="text-3xl font-bold text-gray-900 mt-1">{kpi.value}</p>
-                    <p className={`mt-2 text-sm font-medium ${kpi.change.startsWith("+") ? "text-green-500" : "text-red-500"}`}>
+                    {/* <p className={`mt-2 text-sm font-medium ${kpi.change.startsWith("+") ? "text-green-500" : "text-red-500"}`}>
                     {kpi.change} since last month
-                    </p>
+                    </p> */}
                 </div>
                 ))}
             </div>

@@ -5,6 +5,7 @@ import HomePage from "./components/roles/doctor/Pages/HomePage";
 import StatisticsPage from "./components/roles/doctor/Pages/StatisticsPage";
 import AppLayout from "./components/roles/doctor/layouts/dashboard/AppLayout";
 import UsersPage from "./components/roles/doctor/Pages/PatientsPage";
+import UserProfile from "./components/roles/doctor/Pages/PatientProfile";
 const MainRoutes = createBrowserRouter([
     {
         path: "/auth",
@@ -24,6 +25,10 @@ const MainRoutes = createBrowserRouter([
         Component: AppLayout,
         children: [
             {
+                path: "",
+                Navigate: "/doctor/home",
+            },
+            {
                 path: "home",
                 Component: HomePage,
             },
@@ -34,6 +39,10 @@ const MainRoutes = createBrowserRouter([
             {
                 path: "users",
                 Component: UsersPage,
+            },
+            {
+                path: "users/:id",
+                Component: UserProfile,
             }
         ]
     },

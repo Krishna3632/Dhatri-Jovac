@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useData } from "../../../../context/DataContext";
 // --- SVG Icons ---
 
 const IconSearch = ({ className }) => (
@@ -66,92 +67,92 @@ export default function PatientsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("name");
-  const [viewMode, setViewMode] = useState("table"); // table or cards
-  
+
+  const { patients } = useData();
   useEffect(() => {
     document.title = "Doctor - Patients";
   }, []);
   // Enhanced patient data with more details
-  const patients = [
-    { 
-      id: 1, 
-      name: "John Doe", 
-      age: 34, 
-      gender: "Male",
-      phone: "+1 (555) 123-4567",
-      email: "john.doe@email.com",
-      lastVisit: "2025-09-10", 
-      nextAppointment: "2025-09-25",
-      status: "Active",
-      condition: "Hypertension",
-      doctor: "Dr. Smith"
-    },
-    { 
-      id: 2, 
-      name: "Jane Smith", 
-      age: 28, 
-      gender: "Female",
-      phone: "+1 (555) 234-5678",
-      email: "jane.smith@email.com",
-      lastVisit: "2025-09-12", 
-      nextAppointment: null,
-      status: "Inactive",
-      condition: "Routine Checkup",
-      doctor: "Dr. Johnson"
-    },
-    { 
-      id: 3, 
-      name: "Alex Johnson", 
-      age: 42, 
-      gender: "Male",
-      phone: "+1 (555) 345-6789",
-      email: "alex.johnson@email.com",
-      lastVisit: "2025-09-14", 
-      nextAppointment: "2025-09-28",
-      status: "Active",
-      condition: "Diabetes",
-      doctor: "Dr. Smith"
-    },
-    { 
-      id: 4, 
-      name: "Emily Brown", 
-      age: 31, 
-      gender: "Female",
-      phone: "+1 (555) 456-7890",
-      email: "emily.brown@email.com",
-      lastVisit: "2025-09-15", 
-      nextAppointment: "2025-09-22",
-      status: "Active",
-      condition: "Allergies",
-      doctor: "Dr. Wilson"
-    },
-    { 
-      id: 5, 
-      name: "Michael Chen", 
-      age: 39, 
-      gender: "Male",
-      phone: "+1 (555) 567-8901",
-      email: "michael.chen@email.com",
-      lastVisit: "2025-09-08", 
-      nextAppointment: null,
-      status: "Inactive",
-      condition: "Back Pain",
-      doctor: "Dr. Johnson"
-    },
-    { 
-      id: 6, 
-      name: "Sarah Wilson", 
-      age: 45, 
-      gender: "Female",
-      phone: "+1 (555) 678-9012",
-      email: "sarah.wilson@email.com",
-      lastVisit: "2025-09-16", 
-      nextAppointment: "2025-09-30",
-      status: "Active",
-      condition: "Anxiety",
-      doctor: "Dr. Smith"
-    }
-  ];
+  // const patients = [
+  //   { 
+  //     id: 1, 
+  //     name: "John Doe", 
+  //     age: 34, 
+  //     gender: "Male",
+  //     phone: "+1 (555) 123-4567",
+  //     email: "john.doe@email.com",
+  //     lastVisit: "2025-09-10", 
+  //     nextAppointment: "2025-09-25",
+  //     status: "Active",
+  //     condition: "Hypertension",
+  //     doctor: "Dr. Smith"
+  //   },
+  //   { 
+  //     id: 2, 
+  //     name: "Jane Smith", 
+  //     age: 28, 
+  //     gender: "Female",
+  //     phone: "+1 (555) 234-5678",
+  //     email: "jane.smith@email.com",
+  //     lastVisit: "2025-09-12", 
+  //     nextAppointment: null,
+  //     status: "Inactive",
+  //     condition: "Routine Checkup",
+  //     doctor: "Dr. Johnson"
+  //   },
+  //   { 
+  //     id: 3, 
+  //     name: "Alex Johnson", 
+  //     age: 42, 
+  //     gender: "Male",
+  //     phone: "+1 (555) 345-6789",
+  //     email: "alex.johnson@email.com",
+  //     lastVisit: "2025-09-14", 
+  //     nextAppointment: "2025-09-28",
+  //     status: "Active",
+  //     condition: "Diabetes",
+  //     doctor: "Dr. Smith"
+  //   },
+  //   { 
+  //     id: 4, 
+  //     name: "Emily Brown", 
+  //     age: 31, 
+  //     gender: "Female",
+  //     phone: "+1 (555) 456-7890",
+  //     email: "emily.brown@email.com",
+  //     lastVisit: "2025-09-15", 
+  //     nextAppointment: "2025-09-22",
+  //     status: "Active",
+  //     condition: "Allergies",
+  //     doctor: "Dr. Wilson"
+  //   },
+  //   { 
+  //     id: 5, 
+  //     name: "Michael Chen", 
+  //     age: 39, 
+  //     gender: "Male",
+  //     phone: "+1 (555) 567-8901",
+  //     email: "michael.chen@email.com",
+  //     lastVisit: "2025-09-08", 
+  //     nextAppointment: null,
+  //     status: "Inactive",
+  //     condition: "Back Pain",
+  //     doctor: "Dr. Johnson"
+  //   },
+  //   { 
+  //     id: 6, 
+  //     name: "Sarah Wilson", 
+  //     age: 45, 
+  //     gender: "Female",
+  //     phone: "+1 (555) 678-9012",
+  //     email: "sarah.wilson@email.com",
+  //     lastVisit: "2025-09-16", 
+  //     nextAppointment: "2025-09-30",
+  //     status: "Active",
+  //     condition: "Anxiety",
+  //     doctor: "Dr. Smith"
+  //   }
+  // ];
 
   // Filter and sort patients
   let filteredPatients = patients.filter((p) => {
@@ -213,9 +214,9 @@ export default function PatientsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-blue-50 rounded-lg">
+            {/* <div className="p-3 bg-blue-50 rounded-lg">
               <IconUsers className="w-6 h-6 text-blue-600" />
-            </div>
+            </div>  */}
           </div>
           <h3 className="text-sm font-medium text-gray-600">Total Patients</h3>
           <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
@@ -223,9 +224,9 @@ export default function PatientsPage() {
 
         <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-green-50 rounded-lg">
+            {/* <div className="p-3 bg-green-50 rounded-lg">
               <IconUser className="w-6 h-6 text-green-600" />
-            </div>
+            </div> */}
           </div>
           <h3 className="text-sm font-medium text-gray-600">Active Patients</h3>
           <p className="text-3xl font-bold text-gray-900">{stats.active}</p>
@@ -233,9 +234,9 @@ export default function PatientsPage() {
 
         <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-red-50 rounded-lg">
+            {/* <div className="p-3 bg-red-50 rounded-lg">
               <IconUser className="w-6 h-6 text-red-600" />
-            </div>
+            </div> */}
           </div>
           <h3 className="text-sm font-medium text-gray-600">Inactive Patients</h3>
           <p className="text-3xl font-bold text-gray-900">{stats.inactive}</p>
@@ -243,9 +244,9 @@ export default function PatientsPage() {
 
         <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-purple-50 rounded-lg">
+            {/* <div className="p-3 bg-purple-50 rounded-lg">
               <IconCalendar className="w-6 h-6 text-purple-600" />
-            </div>
+            </div> */}
           </div>
           <h3 className="text-sm font-medium text-gray-600">Upcoming Appointments</h3>
           <p className="text-3xl font-bold text-gray-900">{stats.appointments}</p>
@@ -315,7 +316,7 @@ export default function PatientsPage() {
               {filteredPatients.length > 0 ? (
                 filteredPatients.map((patient) => (
                   <tr
-                    key={patient.id}
+                    key={patient._id}
                     className="border-b hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-6 py-4">
@@ -325,7 +326,7 @@ export default function PatientsPage() {
                         </div>
                         <div>
                           <p className="font-medium text-gray-800">{patient.name}</p>
-                          <p className="text-sm text-gray-500">ID: #{patient.id}</p>
+                          <p className="text-sm text-gray-500">ID: #{patient._id}</p>
                         </div>
                       </div>
                     </td>
@@ -364,7 +365,7 @@ export default function PatientsPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end space-x-2">
-                        <Link to={`/doctor/users/${patient.id}`}>
+                        <Link to={`/doctor/users/${patient._id}`}>
                         <button 
                           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                           title="View Patient"
