@@ -6,7 +6,6 @@ import userModel from "../models/userModel.js";
 
 const router = express.Router();
 
-// Helper functions
 const isValidEmail = (email) => /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email);
 const isStrongPassword = (password) => password.length >= 6;
 
@@ -14,11 +13,10 @@ const createToken = (user) => {
   return jwt.sign(
     { userId: user._id, email: user.email, role: user.role },
     process.env.JWT_SECRET || "your-secret-key",
-    { expiresIn: "24h" } // extended from 5m → 24h
+    { expiresIn: "24h" } 
   );
 };
 
-// ✅ REGISTER
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, role, phoneNumber, address } = req.body;
@@ -53,7 +51,7 @@ router.post("/register", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // true in production (HTTPS)
+      secure: false,
       sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
@@ -65,7 +63,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// ✅ LOGIN
+
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -74,7 +72,7 @@ router.post("/login", async (req, res) => {
 
     const user = await userModel.findOne({ email });
     if (!user) return res.status(401).json({ message: "Invalid credentials" });
-    if (!user.isActive) return res.status(401).json({ message: "Account is deactivated" });
+    
 
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) return res.status(401).json({ message: "Invalid credentials" });
@@ -101,7 +99,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// ✅ CHECK TOKEN
+
 router.get("/check-token", (req, res) => {
   const token = req.cookies.token;
   if (!token) return res.status(401).json({ error: "No token provided" });
@@ -114,7 +112,7 @@ router.get("/check-token", (req, res) => {
   }
 });
 
-// ✅ LOGOUT
+
 router.post("/logout", (req, res) => {
   res.clearCookie("token");
   res.json({ message: "Logged out successfully" });

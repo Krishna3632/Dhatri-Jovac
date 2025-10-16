@@ -5,10 +5,6 @@ import jwt from "jsonwebtoken";
 
 const userRoutes = express.Router();
 
-// Helper function to validate email format
-
-
-// Get user profile
 userRoutes.get("/profile/:userId", async (req, res) => {
   try {
     const user = await userModel.findById(req.params.userId).select('-password');
@@ -22,7 +18,7 @@ userRoutes.get("/profile/:userId", async (req, res) => {
   }
 });
 
-// Update user profile
+
 userRoutes.put("/profile/:userId", async (req, res) => {
   try {
     const updates = { ...req.body };
@@ -50,7 +46,6 @@ userRoutes.put("/profile/:userId", async (req, res) => {
   }
 });
 
-// Change password
 userRoutes.post("/change-password/:userId", async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;

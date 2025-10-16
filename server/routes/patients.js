@@ -12,6 +12,6 @@ patientRoutes.get('/getAll', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
-// patientRoutes.get('/:id', async (req, res) => {
+
 
 export default patientRoutes;

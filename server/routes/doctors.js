@@ -3,7 +3,7 @@ import doctorsModel from '../models/doctorsModel.js';
 
 const doctorRoutes = express.Router();
 
-// Get all doctors
+
 doctorRoutes.get('/doctors', async (req, res) => {
   try {
     const doctors = await doctorsModel.find({}).populate('user', '-password');
@@ -14,7 +14,7 @@ doctorRoutes.get('/doctors', async (req, res) => {
   }
 });
  
-// Get a single doctor by ID
+
 doctorRoutes.get('/doctors/:id', async (req, res) => {
   try {
     const doctor = await doctorsModel.findById(req.params.id).populate('user', '-password');
@@ -59,7 +59,7 @@ doctorRoutes.post('/doctors', async (req, res) => {
   }
 });
 
-// Update a doctor
+
 doctorRoutes.put('/doctors/:id', async (req, res) => {
   try {
     const updatedDoctor = await doctorsModel.findByIdAndUpdate(
@@ -80,7 +80,7 @@ doctorRoutes.put('/doctors/:id', async (req, res) => {
   }
 });
 
-// Delete a doctor
+
 doctorRoutes.delete('/doctors/:id', async (req, res) => {
   try {
     const deletedDoctor = await doctorsModel.findByIdAndDelete(req.params.id);

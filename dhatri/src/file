@@ -1,7 +1,0 @@
-import AppLayout from "./components/roles/doctor/layouts/AppLayout";
-import HomePage from "./components/roles/doctor/Pages/HomePage";
-import PatientsPage from "./components/roles/doctor/pages/PatientsPage";
-import StatisticsPage from "./components/roles/doctor/Pages/StatisticsPage";
-import UserLayout from "./components/roles/doctor/layouts/UserLayout";
-import UserProfile from "./components/roles/doctor/Pages/PatientProfile";
-import DoctorProfilePage from "./components/roles/doctor/Pages/DoctorProfilePage"; 
