@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useData } from "../../../../context/DataContext";
+import { toast }  from "react-toastify";
+// import { useToast } from "@chakra-ui/react";
 // --- SVG Icons ---
 
 const IconSearch = ({ className }) => (
@@ -102,21 +104,21 @@ export default function PatientsPage() {
      }
 
   // Filter and sort patients
-  let filteredPatients = patients.filter((p) => {
-    const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         p.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         p.condition.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || p.status.toLowerCase() === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  // let filteredPatients = patients.filter((p) => {
+  //   const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //                        p.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //                        p.condition.toLowerCase().includes(searchTerm.toLowerCase());
+  //   const matchesStatus = statusFilter === "all" || p.status.toLowerCase() === statusFilter;
+  //   return matchesSearch && matchesStatus;
+  // });
 
-  // Sort patients
-  filteredPatients.sort((a, b) => {
-    if (sortBy === "name") return a.name.localeCompare(b.name);
-    if (sortBy === "age") return a.age - b.age;
-    if (sortBy === "lastVisit") return new Date(b.lastVisit) - new Date(a.lastVisit);
-    return 0;
-  });
+  // // Sort patients
+  // filteredPatients.sort((a, b) => {
+  //   if (sortBy === "name") return a.name.localeCompare(b.name);
+  //   if (sortBy === "age") return a.age - b.age;
+  //   if (sortBy === "lastVisit") return new Date(b.lastVisit) - new Date(a.lastVisit);
+  //   return 0;
+  // });
 
 
   const stats = {
@@ -142,14 +144,33 @@ export default function PatientsPage() {
     })
       .then((response) => {
         if (response.ok) {
-          alert(`Patient ${patientId} deleted successfully.`);
+           toast({
+      title: "User deleted",
+      description: "User has been removed successfully.",
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+    });
         } else {
-          alert(`Failed to delete patient ${patientId}.`);
+          // toast.error("Failed to delete patient.");
+          toast({
+            title: "Error",
+            description: "Failed to delete patient.",
+            status: "error",
+            duration: 2000,
+            isClosable: true,
+          });
         }
       })
       .catch((error) => {
         console.error("Error deleting patient:", error);
-        alert(`Error deleting patient ${patientId}.`);
+        toast({
+          title: "Error",
+          description: "Error deleting patient.",
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
       });
       refreshPatients();
   };
@@ -210,11 +231,11 @@ export default function PatientsPage() {
         </div>
       </div>
 
-      {/* Filters and Search */}
-      <div className="bg-white p-6 rounded-xl shadow-md mb-8">
+      {/* Filters and Search
+       <div className="bg-white p-6 rounded-xl shadow-md mb-8">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
           {/* Search Bar */}
-          <div className="relative flex-1 max-w-md">
+          {/* <div className="relative flex-1 max-w-md">
             <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
@@ -223,10 +244,10 @@ export default function PatientsPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
             />
-          </div>
+          </div> */}
 
           {/* Filters */}
-          <div className="flex items-center space-x-4">
+          {/* <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               <IconFilter className="w-4 h-4 text-gray-600" />
               <select
@@ -251,7 +272,7 @@ export default function PatientsPage() {
             </select>
           </div>
         </div>
-      </div>
+      </div>  */} 
 
       {/* Patient Table */}
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
@@ -270,8 +291,8 @@ export default function PatientsPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredPatients.length > 0 ? (
-                filteredPatients.map((patient) => (
+              {patientData.length > 0 ? (
+                patientData.map((patient) => (
                   <tr
                     key={patient._id}
                     className="border-b hover:bg-gray-50 transition-colors"

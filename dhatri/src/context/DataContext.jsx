@@ -21,7 +21,7 @@ export const DataProvider = ({ children }) => {
 
   useEffect(() => {
     fetchPatients();
-  }, []); // ✅ Fetch once on mount
+  }, []); 
 
   return (
     <DataContext.Provider value={{ patients, refreshPatients: fetchPatients }}>

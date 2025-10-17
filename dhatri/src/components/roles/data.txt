@@ -1,0 +1,131 @@
+[
+  {
+    "name": "Aarav Mehta",
+    "email": "aarav.mehta@example.com",
+    "password": "Password1",
+    "role": "admin",
+    "phoneNumber": "9876543210",
+    "address": {
+      "street": "12 MG Road",
+      "city": "Delhi",
+      "state": "Delhi",
+      "zipCode": "110001"
+    }
+  },  {
+    "name": "Priya Sharma",
+    "email": "priya.sharma@example.com",
+    "password": "Password2",
+    "role": "doctor",
+    "phoneNumber": "9876543211",
+    "address": {
+      "street": "23 Sector 45",
+      "city": "Noida",
+      "state": "Uttar Pradesh",
+      "zipCode": "201301"
+    }
+  },
+  {
+    "name": "Rohan Verma",
+    "email": "rohan.verma@example.com",
+    "password": "Password3",
+    "role": "patient",
+    "phoneNumber": "9876543212",
+    "address": {
+      "street": "4 Civil Lines",
+      "city": "Lucknow",
+      "state": "Uttar Pradesh",
+      "zipCode": "226001"
+    }
+  },
+  {
+    "name": "Sneha Nair",
+    "email": "sneha.nair@example.com",
+    "password": "Password4",
+    "role": "doctor",
+    "phoneNumber": "9876543213",
+    "address": {
+      "street": "56 Marine Drive",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "zipCode": "400001"
+    }
+  },
+  {
+    "name": "Karan Patel",
+    "email": "karan.patel@example.com",
+    "password": "Password5",
+    "role": "patient",
+    "phoneNumber": "9876543214",
+    "address": {
+      "street": "89 CG Road",
+      "city": "Ahmedabad",
+      "state": "Gujarat",
+      "zipCode": "380009"
+    }
+  },
+  {
+    "name": "Ananya Gupta",
+    "email": "ananya.gupta@example.com",
+    "password": "Password6",
+    "role": "doctor",
+    "phoneNumber": "9876543215",
+    "address": {
+      "street": "17 Park Street",
+      "city": "Kolkata",
+      "state": "West Bengal",
+      "zipCode": "700016"
+    }
+  },
+  {
+    "name": "Vikram Singh",
+    "email": "vikram.singh@example.com",
+    "password": "Password7",
+    "role": "patient",
+    "phoneNumber": "9876543216",
+    "address": {
+      "street": "3 Residency Road",
+      "city": "Jaipur",
+      "state": "Rajasthan",
+      "zipCode": "302001"
+    }
+  },
+  {
+    "name": "Meera Iyer",
+    "email": "meera.iyer@example.com",
+    "password": "Password8",
+    "role": "doctor",
+    "phoneNumber": "9876543217",
+    "address": {
+      "street": "22 Anna Salai",
+      "city": "Chennai",
+      "state": "Tamil Nadu",
+      "zipCode": "600002"
+    }
+  },
+  {
+    "name": "Aditya Das",
+    "email": "aditya.das@example.com",
+    "password": "Password9",
+    "role": "patient",
+    "phoneNumber": "9876543218",
+    "address": {
+      "street": "9 CR Avenue",
+      "city": "Kolkata",
+      "state": "West Bengal",
+      "zipCode": "700072"
+    }
+  },
+  {
+    "name": "Ritika Kapoor",
+    "email": "ritika.kapoor@example.com",
+    "password": "Password10",
+    "role": "doctor",
+    "phoneNumber": "9876543219",
+    "address": {
+      "street": "45 MG Road",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "zipCode": "411001"
+    }
+  }
+]

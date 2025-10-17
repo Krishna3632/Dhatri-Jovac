@@ -1,7 +1,8 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import SideBar from "../../SideBar";
 import { Home, Users, BarChart2, UserCircle } from "lucide-react";
-
+import { ToastContainer , toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function AppLayout() {
   const navigate = useNavigate();
 
@@ -30,6 +31,7 @@ function AppLayout() {
       <main className="flex-1 p-6">
         <Outlet /> 
       </main>
+      <ToastContainer position="bottom-right" autoClose={2000} />
     </div>
   );
 }

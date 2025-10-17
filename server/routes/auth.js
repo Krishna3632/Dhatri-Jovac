@@ -16,7 +16,33 @@ const createToken = (user) => {
     { expiresIn: "24h" } 
   );
 };
+router.post("/bulk-register", async (req, res) => {
+  try {
+    let { usersData } = req.body;
+    usersData = Array.toObject(usersData);
+    if (!Array.isArray(usersData) || usersData.length !== 10) {
+      return res.status(400).json({ message: "Please provide an array of exactly 10 users" });
+    }
+    for( const user of usersData) {
+      if (!user.name || !user.email || !user.password) {
+        return res.status(400).json({ message: "Please provide all required fields for each user" });
+      }
+      const { email, password, role, phoneNumber, address } = user;
+      if (!isValidEmail(email)) {
+        return res.status(400).json({ message: `Invalid email address for user: ${email}` });
+      }
+      if (!isStrongPassword(password)) {
+        return res.status(400).json({ message: `Weak password for user: ${email}` });
+      }
+      await userModel.insertOne(user);
+    }
 
+    res.status(201).json({ message: "10 users added successfully!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, role, phoneNumber, address } = req.body;
