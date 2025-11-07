@@ -11,11 +11,42 @@ const isStrongPassword = (password) => password.length >= 6;
 
 const createToken = (user) => {
   return jwt.sign(
-    { userId: user._id, email: user.email, role: user.role },
+    { userId: user._id, data:user},
     process.env.JWT_SECRET || "your-secret-key",
     { expiresIn: "24h" } 
   );
 };
+// router.get("/getUser", authMiddleware, async (req, res) => {
+//   try {
+//     using token from authMiddleware to get user id"
+//   } catch (error) {
+    
+//   }
+// });
+router.get("/getUser", async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ error: "No token provided" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "your-secret-key");
+    const user = await userModel.findById(decoded.userId).select("-password");
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json({
+      user: {
+        id: user._id,
+        name: user.name || decoded.username, // fallback to token
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 router.post("/bulk-register", async (req, res) => {
   try {
     let { usersData } = req.body;

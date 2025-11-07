@@ -4,11 +4,15 @@ import './index.css'
 import MainRoutes from './router';
 import { RouterProvider } from "react-router-dom";
 import { DataProvider } from './context/DataContext';
+import { AuthProvider } from './context/AuthContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <DataProvider>
-      <RouterProvider router={MainRoutes} />
-    </DataProvider>
+    <AuthProvider>
+      <DataProvider>
+        <RouterProvider router={MainRoutes} />
+      </DataProvider>
+    </AuthProvider>
   </React.StrictMode>
 )
+AuthProvider

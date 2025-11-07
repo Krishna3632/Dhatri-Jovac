@@ -6,6 +6,10 @@ import StatisticsPage from "./components/roles/doctor/Pages/StatisticsPage";
 import AppLayout from "./components/roles/doctor/layouts/dashboard/AppLayout";
 import UsersPage from "./components/roles/doctor/Pages/PatientsPage";
 import UserProfile from "./components/roles/doctor/Pages/PatientProfile";
+import Profile from "./components/roles/patient/Pages/Profile";
+import UserBar from "./components/UI/UserBar";
+import UserLayout from "./components/roles/patient/layouts/UserLayout";
+import Text from "./components/roles/patient/layouts/Text";
 const MainRoutes = createBrowserRouter([
     {
         path: "/auth",
@@ -46,7 +50,20 @@ const MainRoutes = createBrowserRouter([
             }
         ]
     },
-
+    // {
+    //     path: "*",
+    //     Navigate: "/auth/login",
+    // },
+ {
+    path: "/patients",
+    // ✅ Wrap all patient pages with UserLayout
+    children: [
+      {
+        path: "home",
+        element: <UserLayout children={<Text />} />, // ⚠️ Not needed unless you want nested layout repetition
+      },
+    ],
+  },
 ]);
 
 export default MainRoutes;
