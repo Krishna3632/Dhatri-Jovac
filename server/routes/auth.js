@@ -127,7 +127,8 @@ router.post("/login", async (req, res) => {
     if (!email || !password)
       return res.status(400).json({ message: "Email and password are required" });
 
-    const user = await userModel.findOne({ email });
+    // Explicitly select password field since it has select: false in schema
+    const user = await userModel.findOne({ email }).select("+password");
     if (!user) return res.status(401).json({ message: "Invalid credentials" });
     
 

@@ -1,6 +1,7 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import Login from "./components/Auth/Login";
 import SignupPage from "./components/Auth/SignUp";
+import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import HomePage from "./components/roles/doctor/Pages/HomePage";
 import StatisticsPage from "./components/roles/doctor/Pages/StatisticsPage";
 import AppLayout from "./components/roles/doctor/layouts/dashboard/AppLayout";
@@ -10,60 +11,102 @@ import Profile from "./components/roles/patient/Pages/Profile";
 import UserBar from "./components/UI/UserBar";
 import UserLayout from "./components/roles/patient/layouts/UserLayout";
 import Text from "./components/roles/patient/layouts/Text";
+// import Diagram from "./components/Mermaid";
+import LinearRegressionFromScratch from "./components/UI/LinearRegression";
 const MainRoutes = createBrowserRouter([
+    {
+        path: "/",
+        element: <Navigate to="/login" replace />,
+    },
+    {
+        path: "/login",
+        element: <Login />,
+    },
+    {
+        path: "/signup",
+        element: <SignupPage />,
+    },
+    // Legacy auth routes for backward compatibility
     {
         path: "/auth",
         children: [
             {
                 path: "login",
-                Component: Login,
+                element: <Navigate to="/login" replace />,
             },
             {
                 path: "signup",
-                Component: SignupPage,
+                element: <Navigate to="/signup" replace />,
             }
         ]
     },
     {
         path: "/doctor",
-        Component: AppLayout,
+        element: (
+            <ProtectedRoute allowedRoles={["doctor", "admin"]}>
+                <AppLayout />
+            </ProtectedRoute>
+        ),
         children: [
             {
                 path: "",
-                Navigate: "/doctor/home",
+                element: <Navigate to="/doctor/home" replace />,
             },
             {
                 path: "home",
-                Component: HomePage,
+                element: <HomePage />,
             },
             {
                 path: "stats",
-                Component: StatisticsPage,
+                element: <StatisticsPage />,
             },
             {
                 path: "users",
-                Component: UsersPage,
+                element: <UsersPage />,
             },
             {
                 path: "users/:id",
-                Component: UserProfile,
+                element: <UserProfile />,
             }
         ]
     },
-    // {
-    //     path: "*",
-    //     Navigate: "/auth/login",
-    // },
- {
-    path: "/patients",
-    // ✅ Wrap all patient pages with UserLayout
-    children: [
-      {
-        path: "home",
-        element: <UserLayout children={<Text />} />, // ⚠️ Not needed unless you want nested layout repetition
-      },
-    ],
-  },
+    {
+        path: "/patient",
+        element: (
+            <ProtectedRoute allowedRoles={["patient"]}>
+                <UserLayout />
+            </ProtectedRoute>
+        ),
+        children: [
+            {
+                path: "",
+                element: <Navigate to="/patient/home" replace />,
+            },
+            {
+                path: "home",
+                element: <UserLayout children={Text} />,
+            },
+            {
+                path: "profile",
+                element: <Profile />,
+            }
+        ]
+    },
+    // Legacy patient routes for backward compatibility
+    {
+        path: "/patients",
+        children: [
+            {
+                path: "home",
+                element: <Navigate to="/patient/home" replace />,
+            },
+        ],
+    },
+  
+    {
+        path: "*",
+        element: <Navigate to="/login" replace />,
+    }
 ]);
 
 export default MainRoutes;
