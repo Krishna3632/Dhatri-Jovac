@@ -4,6 +4,21 @@ import medicationSchema from '../models/medicationSchema.js';
 
 const patientRoutes = express.Router();
 
+
+
+patientRoutes.post('/create', async (req, res) => {
+    try {
+        const { name, age, gender, contactInfo } = req.body;
+        const newPatient = new patientModel({
+            name,age,gender,contactInfo,isDoctor:false
+        });
+        await newPatient.save();
+        res.status(201).json(newPatient);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 patientRoutes.get('/getAll', async (req, res) => {
     try {
         const patients = await patientModel.find();

@@ -26,6 +26,8 @@ const auditLogSchema = new mongoose.Schema(
         "DATA_ACCESS",
         "DATA_MODIFICATION",
         "UNAUTHORIZED_ACCESS",
+        "ERROR",
+        "SYSTEM_ERROR",
       ],
       index: true,
     },
